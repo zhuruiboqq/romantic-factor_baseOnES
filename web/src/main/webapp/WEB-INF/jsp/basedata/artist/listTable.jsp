@@ -10,10 +10,11 @@
         </th>
         <th style="width: 100px" sort="id">编号</th>
         <th style="width: 150px" sort="name">姓名</th>
-        <th>年龄</th>
-        <th>出生日期</th>
-        <th>性别</th>
-        <th>是否显示</th>
+        <th>昵称</th>
+        <th>类型</th>
+        <th>所属机构</th>
+        <th>优先级</th>
+        <th>状态</th>
     </tr>
     </thead>
     <tbody>
@@ -21,13 +22,14 @@
         <tr>
             <td class="check"><input type="checkbox" name="ids" value="${m.id}"></td>
             <td>
-                <a class="btn btn-link btn-edit" href="${ctx}/showcase/sample/${m.id}">${m.id}</a>
+                <a class="btn btn-link btn-edit" href="${ctx}/basedata/artist/${m.id}">${m.id}</a>
             </td>
             <td>${m.name}</td>
-            <td>${m.age}</td>
-            <td><spring:eval expression="m.birthday"/></td>
-            <td>${m.sex.info}</td>
-            <td>${m.show ? '是' : '否'}</td>
+            <td>${m.simpleName}</td>
+            <td>${m.artistType.info }</td>
+            <td>${m.organization}</td>
+            <td>${m.priority}</td>
+            <td>${m.dataStatus.info}</td>
         </tr>
     </c:forEach>
     </tbody>

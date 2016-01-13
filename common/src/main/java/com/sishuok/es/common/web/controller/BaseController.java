@@ -6,7 +6,9 @@
 package com.sishuok.es.common.web.controller;
 
 import com.sishuok.es.common.entity.AbstractEntity;
+import com.sishuok.es.common.utils.GenericUtil;
 import com.sishuok.es.common.utils.ReflectUtils;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.ui.Model;
@@ -28,13 +30,15 @@ public abstract class BaseController<M extends AbstractEntity, ID extends Serial
     /**
      * 实体类型
      */
-    protected final Class<M> entityClass;
+    protected final Class<?> entityClass;
 
     private String viewPrefix;
 
 
     protected BaseController() {
-        this.entityClass = ReflectUtils.findParameterizedType(getClass(), 0);
+//        this.entityClass = ReflectUtils.findParameterizedType(getClass(), 0);
+        this.entityClass = GenericUtil.getGenericType(getClass());
+        System.out.println(getClass().getName()+"      "+entityClass.toString());
         setViewPrefix(defaultViewPrefix());
     }
 
@@ -67,7 +71,7 @@ public abstract class BaseController<M extends AbstractEntity, ID extends Serial
 
     protected M newModel() {
         try {
-            return entityClass.newInstance();
+            return (M)entityClass.newInstance();
         } catch (Exception e) {
             throw new IllegalStateException("can not instantiated model : " + this.entityClass, e);
         }

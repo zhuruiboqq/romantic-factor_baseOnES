@@ -91,7 +91,7 @@
 * install.bat 安装jar包到本地仓库（jdk6即可）
 * create-db.bat 创建数据库（mysql需要5.5及以上 编码为utf-8）
 * refresh-db.bat 创建schema和初始化data
-* jetty.bat 启动web应用 默认端口9080 可以到es/web/pom.xml下修改（servlet 2.5即可）
+* jetty.bat 启动web应用 默认端口9080 可以到es/web/pom.xml下修改（servlet 2.5即可）http://localhost:9080/es-web/login
 * 系统默认帐户是admin/123456
 
 ####3、注意
