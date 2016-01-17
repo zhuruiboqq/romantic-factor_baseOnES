@@ -6,15 +6,15 @@
     <esform:input path="search.id_in" cssClass="input-small" placeholder="多个使用空格分隔"/>
     &nbsp;&nbsp;
 
-    <esform:label path="search.name_like">姓名</esform:label>
-    <esform:input path="search.name_like" cssClass="input-small" placeholder="模糊匹配"/>
+    <esform:label path="search.artist.name_like">姓名</esform:label>
+    <esform:input path="search.artist.name_like" cssClass="input-small" placeholder="模糊匹配"/>
     &nbsp;&nbsp;
-  <esform:label path="search.simpleName_like">昵称</esform:label>
-    <esform:input path="search.simpleName_like" cssClass="input-small" placeholder="模糊匹配"/>
+  <esform:label path="search.artist.simpleName_like">昵称</esform:label>
+    <esform:input path="search.artist.simpleName_like" cssClass="input-small" placeholder="模糊匹配"/>
     &nbsp;&nbsp;
 
-    <esform:label path="search.dataStatus_eq">状态</esform:label>
-    <esform:select path="search.dataStatus_eq" cssClass="input-small">
+    <esform:label path="search.work.dataStatus_eq">状态</esform:label>
+    <esform:select path="search.work.dataStatus_eq" cssClass="input-small">
         <esform:option label="所有" value=""/>
         <esform:options items="${dataStatusEnumList}" itemLabel="info"/>
     </esform:select>

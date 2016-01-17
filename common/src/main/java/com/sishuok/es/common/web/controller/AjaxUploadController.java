@@ -6,13 +6,14 @@
 package com.sishuok.es.common.web.controller;
 
 import com.sishuok.es.common.Constants;
-import com.sishuok.es.common.utils.ImagesUtils;
 import com.sishuok.es.common.utils.LogUtils;
 import com.sishuok.es.common.utils.MessageUtils;
+import com.sishuok.es.common.utils.image.ImagesUtils;
 import com.sishuok.es.common.web.entity.AjaxUploadResponse;
 import com.sishuok.es.common.web.upload.FileUploadUtils;
 import com.sishuok.es.common.web.upload.exception.FileNameLengthLimitExceededException;
 import com.sishuok.es.common.web.upload.exception.InvalidExtensionException;
+
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;

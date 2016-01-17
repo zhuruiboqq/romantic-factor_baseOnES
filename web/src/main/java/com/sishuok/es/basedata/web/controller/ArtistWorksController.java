@@ -5,17 +5,22 @@
  */
 package com.sishuok.es.basedata.web.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sishuok.es.basedata.entity.ArtistWorksInfo;
 import com.sishuok.es.basedata.service.ArtistWorksService;
-import com.sishuok.es.common.entity.enums.BooleanEnum;
+import com.sishuok.es.common.Constants;
 import com.sishuok.es.core.web.controller.CoreEntryController;
-import com.sishuok.es.showcase.sample.entity.Sex;
 
 /**
  * <p>
@@ -26,7 +31,8 @@ import com.sishuok.es.showcase.sample.entity.Sex;
  * Version: 1.0
  */
 @Controller
-@RequestMapping(value = "/basedata/artist/works")
+@RequestMapping(value = "/basedata/artistWorks")
+@SuppressWarnings("unchecked")
 public class ArtistWorksController<M extends ArtistWorksInfo> extends CoreEntryController<M> {
 
 	private ArtistWorksService<M> getBizService() {
@@ -34,37 +40,53 @@ public class ArtistWorksController<M extends ArtistWorksInfo> extends CoreEntryC
 	}
 
 	public ArtistWorksController() {
-		setResourceIdentity("basedata:artist");
+		setResourceIdentity("basedata:artistWorks");
 	}
 
-	@Override
-	protected void setCommonData(Model model) {
-		model.addAttribute("sexList", Sex.values());
-		model.addAttribute("booleanList", BooleanEnum.values());
+	@RequestMapping(value = "ajaxUpload", method = RequestMethod.GET)
+	public String showCreateForm(Model model) {
+		super.showCreateForm(model);
+		return "basedata/artistWorks/uploadForm";
 	}
 
-	/**
-	 * 验证失败返回true
-	 *
-	 * @param m
-	 * @param result
-	 * @return
-	 */
+	//	@RequestMapping(value = "create/discard", method = RequestMethod.POST)
+	//	@Override
+	//	public String create(Model model, @Valid @ModelAttribute("m") M m, BindingResult result, RedirectAttributes redirectAttributes) {
+	//		//作废原来新增的路径
+	//		result.
+	//		return super.create(model, m, result, redirectAttributes);
+	////		throw new RuntimeException("discarded method");
+	//	}
+	@RequestMapping(value = "create/discard", method = RequestMethod.POST)
 	@Override
-	protected boolean hasError(M m, BindingResult result) {
-		Assert.notNull(m);
+	public String create(Model model, @Valid @ModelAttribute("m") ArtistWorksInfo m, BindingResult result, RedirectAttributes redirectAttributes) {
+		throw new RuntimeException("discarded method");
+	}
 
-		//        //字段错误 前台使用<es:showFieldError commandName="showcase/sample"/> 显示
-		//        if (m.getBirthday() != null && m.getBirthday().after(new Date())) {
-		//            //前台字段名（前台使用[name=字段名]取得dom对象） 错误消息键。。
-		//            result.rejectValue("birthday", "birthday.past");
-		//        }
-		//
-		//        //全局错误 前台使用<es:showGlobalError commandName="showcase/sample"/> 显示
-		//        if (m.getName().contains("admin")) {
-		//            result.reject("name.must.not.admin");
-		//        }
+	@RequestMapping(value = "{id}/update/discard", method = RequestMethod.POST)
+	@Override
+	public String update(Model model, @Valid @ModelAttribute("m") M m, BindingResult result,
+			@RequestParam(value = Constants.BACK_URL, required = false) String backURL, RedirectAttributes redirectAttributes) {
 
-		return result.hasErrors();
+		throw new RuntimeException("discarded method");
+	}
+
+	@RequestMapping(value = "ajaxUpload", method = RequestMethod.POST)
+	public String createWithResourcePermission(Model model, @Valid @ModelAttribute("m") M m, BindingResult result,
+			@RequestParam("workID") Long[] workIDs, RedirectAttributes redirectAttributes) {
+		System.out.println(workIDs.length + " " + workIDs);
+		//		fillResourcePermission(m, resourceIds, permissionIds);
+		try {
+			for (Long workID : workIDs) {
+				M tempM = (M) m.createCopy();
+				tempM.getWork().setId(workID);
+				getBizService().save(tempM);
+			}
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+
+		redirectAttributes.addFlashAttribute(Constants.MESSAGE, "新增成功");
+		return redirectToUrl(null);
 	}
 }

@@ -65,16 +65,19 @@
             <div class="control-group span4">
                 <form:label path="email" cssClass="control-label">邮箱</form:label>
                 <div class="controls">
-                    <form:input path="email" cssClass="validate[required,custom[email],ajax[ajaxCall]]"
+                    <form:input path="email" 
                                 placeholder="如zhang@163.com"/>
+                    <!--  cssClass="validate[required,custom[email],ajax[ajaxCall]]"
+                                -->
                 </div>
             </div>
             <div class="control-group span4">
                 <form:label path="mobilePhoneNumber" cssClass="control-label">手机号</form:label>
                 <div class="controls">
                     <form:input path="mobilePhoneNumber"
-                                cssClass="validate[required,custom[mobilePhoneNumber],ajax[ajaxCall]]"
                                 placeholder="如13512345678"/>
+                            <!--    cssClass="validate[required,custom[mobilePhoneNumber],ajax[ajaxCall]]"
+                                -->
                 </div>
             </div>
 

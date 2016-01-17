@@ -1,7 +1,8 @@
 package com.sishuok.es.basedata.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -15,9 +16,11 @@ import com.sishuok.es.core.entity.CoreEntryInfo;
 @EnableQueryCache
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ArtistWorksInfo extends CoreEntryInfo {
-	@Column(name="artistID")
+	@OneToOne
+	@JoinColumn(name = "artistID")
 	private ArtistInfo artist;
-	@Column(name="workID")
+	@OneToOne
+	@JoinColumn(name = "workID")
 	private AttachmentImageInfo work;
 
 	public ArtistInfo getArtist() {

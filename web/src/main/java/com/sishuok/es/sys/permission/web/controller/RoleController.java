@@ -26,128 +26,109 @@ import javax.validation.Valid;
 import java.util.Set;
 
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 13-1-28 下午4:29
- * <p>Version: 1.0
+ * <p>
+ * User: Zhang Kaitao
+ * <p>
+ * Date: 13-1-28 下午4:29
+ * <p>
+ * Version: 1.0
  */
 @Controller
 @RequestMapping(value = "/admin/sys/permission/role")
 public class RoleController extends BaseCRUDController<Role, Long> {
 
-    @Autowired
-    private PermissionService permissionService;
+	@Autowired
+	private PermissionService permissionService;
 
-    public RoleController() {
-        setResourceIdentity("sys:role");
-    }
+	public RoleController() {
+		setResourceIdentity("sys:role");
+	}
 
-    @Override
-    protected void setCommonData(Model model) {
-        super.setCommonData(model);
-        model.addAttribute("availableList", AvailableEnum.values());
+	@Override
+	protected void setCommonData(Model model) {
+		super.setCommonData(model);
+		model.addAttribute("availableList", AvailableEnum.values());
 
-        Searchable searchable = Searchable.newSearchable();
-//        searchable.addSearchFilter("show", SearchOperator.eq, true);
-        model.addAttribute("permissions", permissionService.findAllWithNoPageNoSort(searchable));
-    }
+		Searchable searchable = Searchable.newSearchable();
+		//        searchable.addSearchFilter("show", SearchOperator.eq, true);
+		model.addAttribute("permissions", permissionService.findAllWithNoPageNoSort(searchable));
+	}
 
+	@RequestMapping(value = "create/discard", method = RequestMethod.POST)
+	@Override
+	public String create(Model model, @Valid @ModelAttribute("m") Role m, BindingResult result, RedirectAttributes redirectAttributes) {
+		throw new RuntimeException("discarded method");
+	}
 
-    @RequestMapping(value = "create/discard", method = RequestMethod.POST)
-    @Override
-    public String create(
-            Model model, @Valid @ModelAttribute("m") Role m, BindingResult result,
-            RedirectAttributes redirectAttributes) {
-        throw new RuntimeException("discarded method");
-    }
+	@RequestMapping(value = "{id}/update/discard", method = RequestMethod.POST)
+	@Override
+	public String update(Model model, @Valid @ModelAttribute("m") Role m, BindingResult result,
+			@RequestParam(value = Constants.BACK_URL, required = false) String backURL, RedirectAttributes redirectAttributes) {
 
-    @RequestMapping(value = "{id}/update/discard", method = RequestMethod.POST)
-    @Override
-    public String update(
-            Model model, @Valid @ModelAttribute("m") Role m, BindingResult result,
-            @RequestParam(value = Constants.BACK_URL, required = false) String backURL,
-            RedirectAttributes redirectAttributes) {
+		throw new RuntimeException("discarded method");
+	}
 
-        throw new RuntimeException("discarded method");
-    }
+	@RequestMapping(value = "create", method = RequestMethod.POST)
+	public String createWithResourcePermission(Model model, @Valid @ModelAttribute("m") Role role, BindingResult result,
+			@RequestParam("resourceId") Long[] resourceIds, @RequestParam("permissionIds") Long[][] permissionIds,
+			RedirectAttributes redirectAttributes) {
 
+		fillResourcePermission(role, resourceIds, permissionIds);
 
-    @RequestMapping(value = "create", method = RequestMethod.POST)
-    public String createWithResourcePermission(
-            Model model,
-            @Valid @ModelAttribute("m") Role role, BindingResult result,
-            @RequestParam("resourceId") Long[] resourceIds,
-            @RequestParam("permissionIds") Long[][] permissionIds,
-            RedirectAttributes redirectAttributes) {
+		return super.create(model, role, result, redirectAttributes);
+	}
 
-        fillResourcePermission(role, resourceIds, permissionIds);
+	@RequestMapping(value = "{id}/update", method = RequestMethod.POST)
+	public String updateWithResourcePermission(Model model, @Valid @ModelAttribute("m") Role role, BindingResult result,
+			@RequestParam("resourceId") Long[] resourceIds, @RequestParam("permissionIds") Long[][] permissionIds,
+			@RequestParam(value = Constants.BACK_URL, required = false) String backURL, RedirectAttributes redirectAttributes) {
 
-        return super.create(model, role, result, redirectAttributes);
-    }
+		fillResourcePermission(role, resourceIds, permissionIds);
 
-    @RequestMapping(value = "{id}/update", method = RequestMethod.POST)
-    public String updateWithResourcePermission(
-            Model model,
-            @Valid @ModelAttribute("m") Role role, BindingResult result,
-            @RequestParam("resourceId") Long[] resourceIds,
-            @RequestParam("permissionIds") Long[][] permissionIds,
-            @RequestParam(value = Constants.BACK_URL, required = false) String backURL,
-            RedirectAttributes redirectAttributes) {
+		return super.update(model, role, result, backURL, redirectAttributes);
+	}
 
-        fillResourcePermission(role, resourceIds, permissionIds);
+	private void fillResourcePermission(Role role, Long[] resourceIds, Long[][] permissionIds) {
+		int resourceLength = resourceIds.length;
+		if (resourceIds.length == 0) {
+			return;
+		}
 
-        return super.update(model, role, result, backURL, redirectAttributes);
-    }
+		if (resourceLength == 1) { //如果长度为1  那么permissionIds就变成如[[0],[1],[2]]这种
+			Set<Long> permissionIdSet = Sets.newHashSet();
+			for (Long[] permissionId : permissionIds) {
+				permissionIdSet.add(permissionId[0]);
+			}
+			role.addResourcePermission(new RoleResourcePermission(resourceIds[0], permissionIdSet));
 
-    private void fillResourcePermission(Role role, Long[] resourceIds, Long[][] permissionIds) {
-        int resourceLength = resourceIds.length;
-        if (resourceIds.length == 0) {
-            return;
-        }
+		} else {
+			for (int i = 0; i < resourceLength; i++) {
+				role.addResourcePermission(new RoleResourcePermission(resourceIds[i], Sets.newHashSet(permissionIds[i])));
+			}
+		}
 
-        if (resourceLength == 1) { //如果长度为1  那么permissionIds就变成如[[0],[1],[2]]这种
-            Set<Long> permissionIdSet = Sets.newHashSet();
-            for (Long[] permissionId : permissionIds) {
-                permissionIdSet.add(permissionId[0]);
-            }
-            role.addResourcePermission(
-                    new RoleResourcePermission(resourceIds[0], permissionIdSet)
-            );
+	}
 
-        } else {
-            for (int i = 0; i < resourceLength; i++) {
-                role.addResourcePermission(
-                        new RoleResourcePermission(resourceIds[i], Sets.newHashSet(permissionIds[i]))
-                );
-            }
-        }
+	@RequestMapping(value = "/changeStatus/{newStatus}")
+	public String changeStatus(HttpServletRequest request, @PathVariable("newStatus") Boolean newStatus, @RequestParam("ids") Long[] ids,
+			RedirectAttributes redirectAttributes) {
 
-    }
+		this.permissionList.assertHasUpdatePermission();
 
-    @RequestMapping(value = "/changeStatus/{newStatus}")
-    public String changeStatus(
-            HttpServletRequest request,
-            @PathVariable("newStatus") Boolean newStatus,
-            @RequestParam("ids") Long[] ids,
-            RedirectAttributes redirectAttributes
-    ) {
+		for (Long id : ids) {
+			Role role = baseService.findOne(id);
+			role.setShow(newStatus);
+			baseService.update(role);
+		}
 
-        this.permissionList.assertHasUpdatePermission();
+		redirectAttributes.addFlashAttribute(Constants.MESSAGE, "操作成功！");
 
-        for (Long id : ids) {
-            Role role = baseService.findOne(id);
-            role.setShow(newStatus);
-            baseService.update(role);
-        }
+		return "redirect:" + request.getAttribute(Constants.BACK_URL);
+	}
 
-        redirectAttributes.addFlashAttribute(Constants.MESSAGE, "操作成功！");
-
-        return "redirect:" + request.getAttribute(Constants.BACK_URL);
-    }
-
-
-    @RequestMapping("{role}/permissions")
-    public String permissions(@PathVariable("role") Role role) {
-        return viewName("permissionsTable");
-    }
+	@RequestMapping("{role}/permissions")
+	public String permissions(@PathVariable("role") Role role) {
+		return viewName("permissionsTable");
+	}
 
 }

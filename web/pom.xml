@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<artifactId>es-parent</artifactId>
-		<groupId>com.sishuok</groupId>
+		<groupId>com.romantic</groupId>
 		<version>1.0-SNAPSHOT</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
@@ -21,8 +21,9 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${jetty.version}</version>
 				<configuration>
-					<reload>manual</reload>
-					<!--<scanIntervalSeconds>2</scanIntervalSeconds> -->
+					<!-- <reload>manual</reload> <scanIntervalSeconds>2</scanIntervalSeconds> 热部署-->
+					<reload>automatic</reload>
+					<scanIntervalSeconds>2</scanIntervalSeconds>
 					<stopPort>9999</stopPort>
 					<contextXml>${project.build.directory}/../src/test/resources/jetty-context.xml</contextXml>
 					<webAppConfig>
@@ -164,7 +165,7 @@
 			</plugin>
 
 			<!--<plugin> -->
-			<!--<groupId>com.sishuok</groupId> -->
+			<!--<groupId>com.romantic</groupId> -->
 			<!--<artifactId>codegen</artifactId> -->
 			<!--<version>${codegen.version}</version> -->
 			<!--</plugin> -->
@@ -183,9 +184,9 @@
 
 	<dependencies>
 		 <dependency>
-			<groupId>com.sishuok</groupId>
+			<groupId>com.romantic</groupId>
 			<artifactId>es-common</artifactId>
-			<version>${sishuok.common.version}</version>
+			<version>${romantic.common.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -202,7 +203,7 @@
 
 		<!-- x-gen user -->
 		<!--<dependency> -->
-		<!--<groupId>com.sishuok</groupId> -->
+		<!--<groupId>com.romantic</groupId> -->
 		<!--<artifactId>x-gen</artifactId> -->
 		<!--<version>1.0</version> -->
 		<!--<scope>provided</scope> -->
@@ -232,7 +233,7 @@
 
 
 	<properties>
-		<sishuok.common.version>1.0-SNAPSHOT</sishuok.common.version>
+		<romantic.common.version>1.0-SNAPSHOT</romantic.common.version>
 		<jetty.version>8.1.8.v20121106</jetty.version>
 		<tomcat.maven.version>2.2</tomcat.maven.version>
 		<support.basedir>${project.parent.parent.basedir}/src/support</support.basedir>
@@ -318,7 +319,7 @@
 				<jpa.databasePlatform>org.hibernate.dialect.MySQL5InnoDBDialect</jpa.databasePlatform>
 				<log.dir>/data/backup/es</log.dir>
 
-				<shiro.uid.cookie.domain>sishuok.com</shiro.uid.cookie.domain>
+				<shiro.uid.cookie.domain>romantic.com</shiro.uid.cookie.domain>
 				<shiro.uid.cookie.path>/</shiro.uid.cookie.path>
 
 			</properties>

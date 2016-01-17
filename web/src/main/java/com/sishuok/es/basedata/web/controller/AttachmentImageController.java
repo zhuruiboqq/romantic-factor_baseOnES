@@ -5,101 +5,186 @@
  */
 package com.sishuok.es.basedata.web.controller;
 
-import java.util.Date;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileUploadBase;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.sishuok.es.basedata.entity.ArtistInfo;
-import com.sishuok.es.basedata.service.ArtistService;
+import com.sishuok.es.basedata.entity.AttachmentImageInfo;
+import com.sishuok.es.basedata.service.AttachmentImageService;
 import com.sishuok.es.common.entity.enums.BooleanEnum;
-import com.sishuok.es.common.web.validate.ValidateResponse;
+import com.sishuok.es.common.utils.LogUtils;
+import com.sishuok.es.common.utils.MessageUtils;
+import com.sishuok.es.common.utils.image.CompressPic;
+import com.sishuok.es.common.web.entity.AjaxUploadResponse;
+import com.sishuok.es.common.web.upload.FileUploadUtils;
+import com.sishuok.es.common.web.upload.FileUtil;
+import com.sishuok.es.common.web.upload.exception.FileNameLengthLimitExceededException;
+import com.sishuok.es.common.web.upload.exception.InvalidExtensionException;
+import com.sishuok.es.core.common.DataStatusEnum;
 import com.sishuok.es.core.web.controller.BaseDataController;
-import com.sishuok.es.showcase.sample.entity.Sample;
 import com.sishuok.es.showcase.sample.entity.Sex;
-import com.sishuok.es.showcase.sample.service.SampleService;
 
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 13-1-28 下午4:29
- * <p>Version: 1.0
+ * <p>
+ * User: Zhang Kaitao
+ * <p>
+ * Date: 13-1-28 下午4:29
+ * <p>
+ * Version: 1.0
  */
 @Controller
-@RequestMapping(value = "/basedata/attachment/image")
-public class AttachmentImageController<M extends ArtistInfo> extends BaseDataController<M> {
+@RequestMapping(value = "/basedata/attachmentImage")
+public class AttachmentImageController<M extends AttachmentImageInfo> extends BaseDataController<M> {
+	//最大上传大小 字节为单位
+	private long maxSize = FileUploadUtils.DEFAULT_MAX_SIZE;
+	//允许的文件内容类型
+	private String[] allowedExtension = FileUploadUtils.DEFAULT_ALLOWED_EXTENSION;
+	//文件上传下载的父目录
+	private String baseDir = FileUploadUtils.getDefaultBaseDir() + File.separator + "img";
 
-    private ArtistService<M> getArtistService() {
-        return (ArtistService<M>) baseService;
-    }
+	private AttachmentImageService<M> getBizService() {
+		return (AttachmentImageService<M>) baseService;
+	}
 
-    public AttachmentImageController() {
-        setResourceIdentity("basedata:artist");
-    }
+	public AttachmentImageController() {
+		setResourceIdentity("basedata:attachmentImage");
+	}
 
-    @Override
-    protected void setCommonData(Model model) {
-        model.addAttribute("sexList", Sex.values());
-        model.addAttribute("booleanList", BooleanEnum.values());
-    }
+	@Override
+	protected void setCommonData(Model model) {
+		super.setCommonData(model);
+	}
 
-    /**
-     * 验证失败返回true
-     *
-     * @param m
-     * @param result
-     * @return
-     */
-    @Override
-    protected boolean hasError(M m, BindingResult result) {
-        Assert.notNull(m);
+	/**
+	 * @param request
+	 * @param files
+	 * @return
+	 */
+	@RequestMapping(value = "ajaxUpload", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxUploadResponse ajaxUpload(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "files[]", required = false) MultipartFile[] files) {
+		System.out.println(request.getParameter("artist") + " " + request.getParameter("artist.id"));
+		//The file upload plugin makes use of an Iframe Transport module for browsers like Microsoft Internet Explorer and Opera, which do not yet support XMLHTTPRequest file uploads.
+		response.setContentType("text/plain");
 
-//        //字段错误 前台使用<es:showFieldError commandName="showcase/sample"/> 显示
-//        if (m.getBirthday() != null && m.getBirthday().after(new Date())) {
-//            //前台字段名（前台使用[name=字段名]取得dom对象） 错误消息键。。
-//            result.rejectValue("birthday", "birthday.past");
-//        }
-//
-//        //全局错误 前台使用<es:showGlobalError commandName="showcase/sample"/> 显示
-//        if (m.getName().contains("admin")) {
-//            result.reject("name.must.not.admin");
-//        }
+		AjaxUploadResponseEx ajaxUploadResponse = new AjaxUploadResponseEx();
 
-        return result.hasErrors();
-    }
+		if (ArrayUtils.isEmpty(files)) {
+			return ajaxUploadResponse;
+		}
 
-    /**
-     * 验证返回格式
-     * 单个：[fieldId, 1|0, msg]
-     * 多个：[[fieldId, 1|0, msg],[fieldId, 1|0, msg]]
-     *
-     * @param fieldId
-     * @param fieldValue
-     * @return
-     */
-    @RequestMapping(value = "validate", method = RequestMethod.GET)
-    @ResponseBody
-    public Object validate(
-            @RequestParam("fieldId") String fieldId, @RequestParam("fieldValue") String fieldValue,
-            @RequestParam(value = "id", required = false) Long id) {
-        ValidateResponse response = ValidateResponse.newInstance();
+		for (MultipartFile file : files) {
+			String filename = file.getOriginalFilename();
+			long size = file.getSize();
+			try {
+				String url = FileUploadUtils.upload(request, baseDir, file, allowedExtension, maxSize, true);
+				File desc = FileUploadUtils.getAbsoluteFile(FileUploadUtils.extractUploadDir(request), url);
+				//				String deleteURL = "/ajaxUpload/delete?filename=" + URLEncoder.encode(url, Constants.ENCODING);
+				//				if (ImagesUtils.isImage(filename)) {
+				//					ajaxUploadResponse.add(filename, size, url, url, deleteURL);
+				//				} else {
+				//					ajaxUploadResponse.add(filename, size, url, deleteURL);
+				//				}
+				// 自动转换小图
+				M m = this.newModel();
+				m.setDataStatus(DataStatusEnum.disable);
+				m.setDisplayURL(url.replace("\\", "/"));
+				m.setExtName(FilenameUtils.getExtension(file.getOriginalFilename()));
+				m.setName(filename);
+				m.setNumber(desc.getName());
+				m.setSizeInByte(size);
+				m.setSize(FileUtil.getFileLength(size));
+				m.setStorePath(desc.getAbsolutePath());
 
-        if ("number".equals(fieldId)) {
-            M sample = getArtistService().findByNumber(fieldValue);
-            if (sample == null || (sample.getId().equals(id) && sample.getName().equals(fieldValue))) {
-                //如果msg 不为空 将弹出提示框
-                response.validateSuccess(fieldId, "");
-            } else {
-                response.validateFail(fieldId, "该名称已被其他人使用");
-            }
-        }
-        return response.result();
-    }
+				reduceImg(m);
 
+				getBizService().save(m);
+				ajaxUploadResponse.add(m);
+				continue;
+			} catch (IOException e) {
+				LogUtils.logError("file upload error", e);
+				ajaxUploadResponse.add(filename, size, MessageUtils.message("upload.server.error"));
+				continue;
+			} catch (InvalidExtensionException e) {
+				ajaxUploadResponse.add(filename, size, MessageUtils.message("upload.not.allow.extension"));
+				continue;
+			} catch (FileUploadBase.FileSizeLimitExceededException e) {
+				ajaxUploadResponse.add(filename, size, MessageUtils.message("upload.exceed.maxSize"));
+				continue;
+			} catch (FileNameLengthLimitExceededException e) {
+				ajaxUploadResponse.add(filename, size, MessageUtils.message("upload.filename.exceed.length"));
+				continue;
+			}
+		}
+		return ajaxUploadResponse;
+	}
 
+	public void reduceImg(AttachmentImageInfo m) {
+		try {
+			File srcfile = new File(m.getStorePath());
+			if (!srcfile.exists()) {
+				return;
+			}
+
+			String smallFilePath = getReduceFileName(m.getStorePath(), "_s");
+			String smallDisplayURL = getReduceFileName(m.getDisplayURL(), "_s");
+			m.setStoreSmallPath(smallFilePath);
+			m.setDisplaySmallURL(smallDisplayURL);
+
+			Image src = javax.imageio.ImageIO.read(srcfile);
+			int srcWidth = src.getWidth(null);
+			int srcHeight = src.getHeight(null);
+			m.setWidth(srcWidth);
+			m.setHeight(srcHeight);
+			CompressPic compressPic = new CompressPic();
+			if (srcWidth >= srcHeight) {
+				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.x,
+						AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.y);
+			} else {
+				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.x,
+						AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.y);
+			}
+			compressPic.setInputFileName(m.getStorePath());
+			compressPic.setOutputFileName(smallFilePath);
+			compressPic.compressPic();
+
+			//			BufferedImage tag = new BufferedImage((int) w, (int) h, BufferedImage.TYPE_INT_RGB);
+			//
+			//			tag.getGraphics().drawImage(src.getScaledInstance(w, h, Image.SCALE_SMOOTH), 0, 0, null);
+			//			FileOutputStream out = new FileOutputStream(imgdist);
+			//			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+			//			encoder.encode(tag);
+			//			out.close();
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	private String getReduceFileName(String srcFilePath, String markStr) {
+		String smallFilePath = srcFilePath;
+		int index = smallFilePath.lastIndexOf(".");
+		if (index != -1 && smallFilePath.length() != index + 1) {
+			smallFilePath = smallFilePath.substring(0, index) + markStr + smallFilePath.substring(index);
+		} else {
+			smallFilePath += markStr;
+		}
+		return smallFilePath;
+	}
 }

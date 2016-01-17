@@ -5,19 +5,21 @@
  */
 package org.apache.shiro.session.mgt.scheduler;
 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.session.mgt.SessionValidationScheduler;
 import org.apache.shiro.session.mgt.ValidatingSessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.support.PeriodicTrigger;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * 使用spring的任务调度器完成 session验证
  * 功能直接复制了{@link org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler}
+ * spring-config-shiro.xml中配置
  * <p>User: Zhang Kaitao
  * <p>Date: 13-7-2 下午5:33
  * <p>Version: 1.0
@@ -126,18 +128,18 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
         }
 
         try {
-
-            PeriodicTrigger trigger = new PeriodicTrigger(sessionValidationInterval, TimeUnit.MILLISECONDS);
-            trigger.setInitialDelay(sessionValidationInterval);
-
-            scheduler.schedule(new Runnable() {
-                @Override
-                public void run() {
-                    if(enabled) {
-                        sessionManager.validateSessions();
-                    }
-                }
-            }, trigger);
+//        	sessionManager.validateSessions();
+//            PeriodicTrigger trigger = new PeriodicTrigger(sessionValidationInterval, TimeUnit.MILLISECONDS);
+//            trigger.setInitialDelay(sessionValidationInterval);
+            //TODO 调度周期有问题，暂时取消
+//            scheduler.schedule(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if(enabled) {
+//                        sessionManager.validateSessions();
+//                    }
+//                }
+//            }, new CronTrigger("0 */2 * * * *"));
 
             this.enabled = true;
 

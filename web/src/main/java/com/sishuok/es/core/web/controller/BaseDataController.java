@@ -5,6 +5,8 @@
  */
 package com.sishuok.es.core.web.controller;
 
+import java.util.Date;
+
 import org.springframework.ui.Model;
 
 import com.sishuok.es.core.common.DataStatusEnum;
@@ -24,5 +26,14 @@ public abstract class BaseDataController<M extends BaseDataInfo> extends CoreCon
 	protected void setCommonData(Model model) {
 		super.setCommonData(model);
 		model.addAttribute("dataStatusEnumList", DataStatusEnum.values());
+	}
+
+	@Override
+	protected M newModel() {
+		M m = super.newModel();
+		m.setCreateTime(new Date());
+		m.setLastUpdateTime(new Date());
+		m.setDataStatus(DataStatusEnum.disable);
+		return m;
 	}
 }
