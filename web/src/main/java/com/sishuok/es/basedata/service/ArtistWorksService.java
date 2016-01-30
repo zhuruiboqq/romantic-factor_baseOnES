@@ -22,7 +22,7 @@ import com.sishuok.es.core.service.CoreEntryService;
 @Service
 public class ArtistWorksService<M extends ArtistWorksInfo> extends CoreEntryService<M> {
 
-	public ArtistWorksRepository<M> getArtistWorksRepository() {
-		return (ArtistWorksRepository<M>) baseRepository;
-	}
+//	public ArtistWorksRepository<M> getArtistWorksRepository() {
+//		return (ArtistWorksRepository<M>) baseRepository;
+//	}
 }

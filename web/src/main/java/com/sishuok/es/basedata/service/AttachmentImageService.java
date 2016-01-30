@@ -22,8 +22,8 @@ import com.sishuok.es.core.service.BaseDataService;
 @Service
 public class AttachmentImageService<M extends AttachmentImageInfo> extends BaseDataService<M> {
 
-	public AttachmentImageRepository<M> getAttachmentImageRepository() {
-		return (AttachmentImageRepository<M>) baseRepository;
-	}
+//	public AttachmentImageRepository<M> getAttachmentImageRepository() {
+//		return (AttachmentImageRepository<M>) baseRepository;
+//	}
 	//TODO 更新状态，并按一定的规则排序
 }

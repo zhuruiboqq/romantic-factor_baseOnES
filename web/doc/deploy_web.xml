@@ -6,7 +6,7 @@
 	<tstamp>
 		<format property="CurrentTime" pattern="[yyyy-MM-dd HH:mm:ss]" />
 	</tstamp>
-	<property name="MavenRepository" value="D:/wsAll/open_source/apache-maven-3.2.1/repository"/>
+	<property name="MavenRepository" value="D:/wsAll/open_source/apache-maven-3.2.1/repository" />
 	<property name="BackupLocation" value="doc/deploy_build" />
 
 	<target name="copy_normal_files">
@@ -29,7 +29,7 @@
 			</fileset>
 		</copy>
 		<zip destfile="${BackupLocation}/es-web_${CurrentDate}.zip" basedir="${BackupLocation}/${CurrentDate}">
-		
 		</zip>
+		<delete dir="${BackupLocation}/${CurrentDate}" ></delete>
 	</target>
 </project>

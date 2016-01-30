@@ -16,5 +16,5 @@ import com.sishuok.es.core.repository.BaseDataRepository;
  * <p>
  * Version: 1.0
  */
-public interface AttachmentImageRepository<M extends AttachmentImageInfo> extends BaseDataRepository<M> {
+public interface AttachmentImageRepository extends BaseDataRepository<AttachmentImageInfo> {
 }

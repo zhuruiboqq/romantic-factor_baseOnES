@@ -16,5 +16,5 @@ import com.sishuok.es.core.repository.BaseDataRepository;
  * <p>
  * Version: 1.0
  */
-public interface ArtistRepository<M extends ArtistInfo> extends BaseDataRepository<M> {
+public interface ArtistRepository extends BaseDataRepository<ArtistInfo> {
 }

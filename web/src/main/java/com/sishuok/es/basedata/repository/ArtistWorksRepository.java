@@ -16,6 +16,6 @@ import com.sishuok.es.core.repository.CoreEntryRepository;
  * <p>
  * Version: 1.0
  */
-public interface ArtistWorksRepository<M extends ArtistWorksInfo> extends CoreEntryRepository<M> {
+public interface ArtistWorksRepository extends CoreEntryRepository<ArtistWorksInfo> {
 
 }

@@ -22,7 +22,7 @@ import com.sishuok.es.core.service.BaseDataService;
 @Service
 public class ArtistService<M extends ArtistInfo> extends BaseDataService<M> {
 
-	public ArtistRepository<M> getArtistRepository() {
-		return (ArtistRepository<M>) baseRepository;
-	}
+//	public ArtistRepository<M> getArtistRepository() {
+//		return (ArtistRepository<M>) baseRepository;
+//	}
 }

@@ -17,5 +17,4 @@ import com.sishuok.es.core.entity.CoreInfo;
  * Version: 1.0
  */
 public interface CoreRepository<M extends CoreInfo> extends BaseRepository<M, Long> {
-
 }
