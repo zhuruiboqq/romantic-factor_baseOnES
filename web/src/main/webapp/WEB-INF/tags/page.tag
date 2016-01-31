@@ -40,7 +40,7 @@
 <div class="pagination">
     <ul>
         <c:choose>
-            <c:when test="${page.firstPage}">
+            <c:when test="${page.first}">
                 <li class="disabled"><a title="首页">首页</a></li>
                 <li class="disabled"><a title="上一页">&lt;&lt;</a></li>
             </c:when>
@@ -78,7 +78,7 @@
         </c:forEach>
 
         <c:choose>
-            <c:when test="${page.lastPage}">
+            <c:when test="${page.last}">
                 <li class="disabled"><a title="下一页">&gt;&gt;</a></li>
                 <li class="disabled"><a title="尾页">尾页</a></li>
             </c:when>

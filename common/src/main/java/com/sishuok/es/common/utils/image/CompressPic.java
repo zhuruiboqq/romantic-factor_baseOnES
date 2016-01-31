@@ -12,8 +12,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+//import com.sun.image.codec.jpeg.JPEGCodec;
+//import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 public class CompressPic {
 
@@ -75,60 +75,54 @@ public class CompressPic {
 		file = new File(path);
 		return file.length();
 	}
-	/** 
-     * 缩放图像（按高度和宽度缩放） 
-     * @param srcImageFile 源图像文件地址 
-     * @param result 缩放后的图像地址 
-     * @param height 缩放后的高度 
-     * @param width 缩放后的宽度 
-     * @param bb 比例不对时是否需要补白：true为补白; false为不补白; 
-     */  
-    public final static void scale2(String srcImageFile, String result,  
-            int height, int width, boolean bb) {  
-        try {  
-            double ratio = 0.0; // 缩放比例  
-            File f = new File(srcImageFile);  
-            BufferedImage bi = ImageIO.read(f);  
-            Image itemp = bi.getScaledInstance(width, height, BufferedImage.SCALE_SMOOTH);  
-            // 计算比例  
-            if ((bi.getHeight() > height) || (bi.getWidth() > width)) {  
-                if (bi.getHeight() > bi.getWidth()) {  
-                    ratio = (new Integer(height)).doubleValue()  
-                            / bi.getHeight();  
-                } else {  
-                    ratio = (new Integer(width)).doubleValue() / bi.getWidth();  
-                }  
-                AffineTransformOp op = new AffineTransformOp(AffineTransform  
-                        .getScaleInstance(ratio, ratio), null);  
-                itemp = op.filter(bi, null);  
-            }  
-            if (bb) {//补白  
-                BufferedImage image = new BufferedImage(width, height,  
-                        BufferedImage.TYPE_INT_RGB);  
-                Graphics2D g = image.createGraphics();  
-                g.setColor(Color.white);  
-                g.fillRect(0, 0, width, height);  
-                if (width == itemp.getWidth(null))  
-                    g.drawImage(itemp, 0, (height - itemp.getHeight(null)) / 2,  
-                            itemp.getWidth(null), itemp.getHeight(null),  
-                            Color.white, null);  
-                else  
-                    g.drawImage(itemp, (width - itemp.getWidth(null)) / 2, 0,  
-                            itemp.getWidth(null), itemp.getHeight(null),  
-                            Color.white, null);  
-                g.dispose();  
-                itemp = image;  
-            }  
-            ImageIO.write((BufferedImage) itemp, "JPEG", new File(result));  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        }  
-    } 
+
+	/**
+	 * 缩放图像（按高度和宽度缩放）
+	 * @param srcImageFile 源图像文件地址
+	 * @param result 缩放后的图像地址
+	 * @param height 缩放后的高度
+	 * @param width 缩放后的宽度
+	 * @param bb 比例不对时是否需要补白：true为补白; false为不补白;
+	 */
+	public final static void scale2(String srcImageFile, String result, int height, int width, boolean bb) {
+		try {
+			double ratio = 0.0; // 缩放比例  
+			File f = new File(srcImageFile);
+			BufferedImage bi = ImageIO.read(f);
+			Image itemp = bi.getScaledInstance(width, height, BufferedImage.SCALE_SMOOTH);
+			// 计算比例  
+			if ((bi.getHeight() > height) || (bi.getWidth() > width)) {
+				if (bi.getHeight() > bi.getWidth()) {
+					ratio = (new Integer(height)).doubleValue() / bi.getHeight();
+				} else {
+					ratio = (new Integer(width)).doubleValue() / bi.getWidth();
+				}
+				AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio), null);
+				itemp = op.filter(bi, null);
+			}
+			if (bb) {//补白  
+				BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+				Graphics2D g = image.createGraphics();
+				g.setColor(Color.white);
+				g.fillRect(0, 0, width, height);
+				if (width == itemp.getWidth(null))
+					g.drawImage(itemp, 0, (height - itemp.getHeight(null)) / 2, itemp.getWidth(null), itemp.getHeight(null), Color.white, null);
+				else
+					g.drawImage(itemp, (width - itemp.getWidth(null)) / 2, 0, itemp.getWidth(null), itemp.getHeight(null), Color.white, null);
+				g.dispose();
+				itemp = image;
+			}
+			ImageIO.write((BufferedImage) itemp, "JPEG", new File(result));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// 图片处理
 	public String compressPic() {
 		try {
 			// 获得源文件
-			file = new File(inputDir+inputFileName);
+			file = new File(inputDir + inputFileName);
 			//System.out.println(inputDir + inputFileName);
 			if (!file.exists()) {
 				//throw new Exception("文件不存在");
@@ -144,10 +138,8 @@ public class CompressPic {
 				// 判断是否是等比缩放
 				if (this.proportion == true) {
 					// 为等比缩放计算输出的图片宽度及高度
-					double rate1 = ((double) img.getWidth(null))
-							/ (double) outputWidth + 0.1;
-					double rate2 = ((double) img.getHeight(null))
-							/ (double) outputHeight + 0.1;
+					double rate1 = ((double) img.getWidth(null)) / (double) outputWidth + 0.1;
+					double rate2 = ((double) img.getHeight(null)) / (double) outputHeight + 0.1;
 					// 根据缩放比率大的进行缩放控制
 					double rate = rate1 > rate2 ? rate1 : rate2;
 					newWidth = (int) (((double) img.getWidth(null)) / rate);
@@ -156,25 +148,22 @@ public class CompressPic {
 					newWidth = outputWidth; // 输出的图片宽度
 					newHeight = outputHeight; // 输出的图片高度
 				}
-				BufferedImage tag = new BufferedImage((int) newWidth,
-						(int) newHeight, BufferedImage.TYPE_INT_RGB);
+				BufferedImage tag = new BufferedImage((int) newWidth, (int) newHeight, BufferedImage.TYPE_INT_RGB);
 
 				/*
 				 * Image.SCALE_SMOOTH 的缩略算法 生成缩略图片的平滑度的 优先级比速度高 生成的图片质量比较好 但速度慢
 				 */
-				tag.getGraphics().drawImage(
-						img.getScaledInstance(newWidth, newHeight,
-								Image.SCALE_SMOOTH), 0, 0, null);
-				File f=new File(outputDir);
-				if (!f.exists()){
-					f.mkdirs(); 
+				tag.getGraphics().drawImage(img.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH), 0, 0, null);
+				File f = new File(outputDir);
+				if (!f.exists()) {
+					f.mkdirs();
 				}
-				FileOutputStream out = new FileOutputStream(outputDir
-						+ outputFileName);
+				FileOutputStream out = new FileOutputStream(outputDir + outputFileName);
 				// JPEGImageEncoder可适用于其他图片类型的转换
-				JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-				encoder.encode(tag);
-				out.close();
+				//TODO 要反注解
+//				JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+//				encoder.encode(tag);
+//				out.close();
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -182,22 +171,19 @@ public class CompressPic {
 		return "ok";
 	}
 
-	public String compressPic(String outputDir,String inputDir, String inputFileName,
-			String outputFileName) {
+	public String compressPic(String outputDir, String inputDir, String inputFileName, String outputFileName) {
 		// 输出图路径
 		this.outputDir = outputDir;
 		// 输入图文件名
 		this.inputFileName = inputFileName;
 		// 输出图文件名
 		this.outputFileName = outputFileName;
-		
-		this.inputDir=inputDir;
+
+		this.inputDir = inputDir;
 		return compressPic();
 	}
 
-	public String compressPic(String inputDir, String outputDir,
-			String inputFileName, String outputFileName, int width, int height,
-			boolean gp) {
+	public String compressPic(String inputDir, String outputDir, String inputFileName, String outputFileName, int width, int height, boolean gp) {
 		// 输入图路径
 		this.inputDir = inputDir;
 		// 输出图路径
@@ -212,9 +198,9 @@ public class CompressPic {
 		this.proportion = gp;
 		return compressPic();
 	}
-	
+
 	public static void main(String[] args) {
-		CompressPic c=new CompressPic();
-		c.compressPic("F:\\","F:\\","IMG_0021.jpg","test1.jpg",460,7500,true);
+		CompressPic c = new CompressPic();
+		c.compressPic("F:\\", "F:\\", "IMG_0021.jpg", "test1.jpg", 460, 7500, true);
 	}
 }

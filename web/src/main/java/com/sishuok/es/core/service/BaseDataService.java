@@ -6,7 +6,12 @@
 package com.sishuok.es.core.service;
 
 import java.util.Date;
+import java.util.Map;
 
+import org.springframework.data.domain.Page;
+
+import com.google.common.collect.Maps;
+import com.sishuok.es.common.entity.search.Searchable;
 import com.sishuok.es.core.entity.BaseDataInfo;
 import com.sishuok.es.core.repository.BaseDataRepository;
 
@@ -32,6 +37,13 @@ public class BaseDataService<M extends BaseDataInfo> extends CoreService<M> {
 	}
 
 	public M findByNumber(String number) {
-		return getCoreRepository().findByNumber(number);
+		Map<String, Object> searchParams = Maps.newHashMap();
+		searchParams.put("number_eq", number);
+		Searchable searchable = Searchable.newSearchable(searchParams);
+		Page<M> page = getCoreRepository().findAll(searchable);
+		if (page.getSize() == 0) {
+			return null;
+		}
+		return page.getContent().get(0);
 	}
 }

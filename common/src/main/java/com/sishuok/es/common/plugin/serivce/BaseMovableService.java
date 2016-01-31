@@ -212,7 +212,7 @@ public abstract class BaseMovableService<M extends BaseEntity & Movable, ID exte
 
             RepositoryHelper.clear();
 
-            if (page.isLastPage()) {
+            if (page.isLast()) {
                 break;
             }
 

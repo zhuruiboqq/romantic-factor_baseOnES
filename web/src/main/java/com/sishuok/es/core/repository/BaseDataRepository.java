@@ -16,5 +16,5 @@ import com.sishuok.es.core.entity.BaseDataInfo;
  * Version: 1.0
  */
 public interface BaseDataRepository<M extends BaseDataInfo> extends CoreRepository<M> {
-	M findByNumber(String number);
+//	M findByNumber(String number);
 }

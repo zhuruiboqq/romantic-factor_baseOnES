@@ -30,6 +30,7 @@ import com.sishuok.es.common.entity.enums.BooleanEnum;
 import com.sishuok.es.common.utils.LogUtils;
 import com.sishuok.es.common.utils.MessageUtils;
 import com.sishuok.es.common.utils.image.CompressPic;
+import com.sishuok.es.common.utils.image.ImgCompressUtil;
 import com.sishuok.es.common.web.entity.AjaxUploadResponse;
 import com.sishuok.es.common.web.upload.FileUploadUtils;
 import com.sishuok.es.common.web.upload.FileUtil;
@@ -152,17 +153,25 @@ public class AttachmentImageController<M extends AttachmentImageInfo> extends Ba
 			int srcHeight = src.getHeight(null);
 			m.setWidth(srcWidth);
 			m.setHeight(srcHeight);
-			CompressPic compressPic = new CompressPic();
 			if (srcWidth >= srcHeight) {
-				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.x,
-						AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.y);
+				ImgCompressUtil.scale2(m.getStorePath(), smallFilePath, AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.y,
+						AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.x, false);
 			} else {
-				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.x,
-						AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.y);
+				ImgCompressUtil.scale2(m.getStorePath(), smallFilePath, AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.y,
+						AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.x, false);
 			}
-			compressPic.setInputFileName(m.getStorePath());
-			compressPic.setOutputFileName(smallFilePath);
-			compressPic.compressPic();
+
+			//			CompressPic compressPic = new CompressPic();
+			//			if (srcWidth >= srcHeight) {
+			//				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.x,
+			//						AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.y);
+			//			} else {
+			//				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.x,
+			//						AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.y);
+			//			}
+			//			compressPic.setInputFileName(m.getStorePath());
+			//			compressPic.setOutputFileName(smallFilePath);
+			//			compressPic.compressPic();
 
 			//			BufferedImage tag = new BufferedImage((int) w, (int) h, BufferedImage.TYPE_INT_RGB);
 			//
