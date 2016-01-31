@@ -5,8 +5,12 @@
  */
 package com.sishuok.es.basedata.web.controller;
 
+import java.io.Serializable;
+import java.util.Map;
+
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -17,9 +21,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.collect.Maps;
+import com.sishuok.es.basedata.entity.ArtistInfo;
 import com.sishuok.es.basedata.entity.ArtistWorksInfo;
+import com.sishuok.es.basedata.entity.AttachmentImageInfo;
 import com.sishuok.es.basedata.service.ArtistWorksService;
 import com.sishuok.es.common.Constants;
+import com.sishuok.es.common.entity.search.Searchable;
 import com.sishuok.es.core.web.controller.CoreEntryController;
 
 /**
@@ -43,6 +51,15 @@ public class ArtistWorksController<M extends ArtistWorksInfo> extends CoreEntryC
 		setResourceIdentity("basedata:artistWorks");
 	}
 
+	@Override
+	protected M newModel() {
+		M m = super.newModel();
+		m.setArtist(new ArtistInfo());
+		m.setWork(new AttachmentImageInfo());
+		return m;
+	}
+
+	@Override
 	@RequestMapping(value = "ajaxUpload", method = RequestMethod.GET)
 	public String showCreateForm(Model model) {
 		super.showCreateForm(model);
@@ -74,6 +91,9 @@ public class ArtistWorksController<M extends ArtistWorksInfo> extends CoreEntryC
 	@RequestMapping(value = "ajaxUpload", method = RequestMethod.POST)
 	public String createWithResourcePermission(Model model, @Valid @ModelAttribute("m") M m, BindingResult result,
 			@RequestParam("workID") Long[] workIDs, RedirectAttributes redirectAttributes) {
+		//TODO 需调整m，应使用框架自动绑定
+		m = (M) result.getTarget();
+		
 		System.out.println(workIDs.length + " " + workIDs);
 		//		fillResourcePermission(m, resourceIds, permissionIds);
 		try {
@@ -85,7 +105,8 @@ public class ArtistWorksController<M extends ArtistWorksInfo> extends CoreEntryC
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
-
+		//设置作品为生效状态
+		
 		redirectAttributes.addFlashAttribute(Constants.MESSAGE, "新增成功");
 		return redirectToUrl(null);
 	}

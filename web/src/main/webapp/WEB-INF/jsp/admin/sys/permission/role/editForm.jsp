@@ -53,7 +53,7 @@
         </li>
     </ul>
 
-    <form:form id="editForm" method="post" commandName="m" cssClass="form-inline form-horizontal form-small">
+    <form:form id="editForm" method="post" modelAttribute="m" cssClass="form-inline form-horizontal form-small">
 
         <es:showGlobalError commandName="m"/>
 

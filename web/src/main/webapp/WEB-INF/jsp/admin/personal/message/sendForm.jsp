@@ -87,7 +87,7 @@
         </div>
         <br/>
     </c:if>
-    <form:form id="editForm" method="post" commandName="m" cssClass="form-horizontal form-small">
+    <form:form id="editForm" method="post" modelAttribute="m" cssClass="form-horizontal form-small">
 
             <es:BackURL hiddenInput="true"/>
 

@@ -17,7 +17,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,11 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sishuok.es.basedata.entity.AttachmentImageInfo;
 import com.sishuok.es.basedata.service.AttachmentImageService;
-import com.sishuok.es.common.entity.enums.BooleanEnum;
 import com.sishuok.es.common.utils.LogUtils;
 import com.sishuok.es.common.utils.MessageUtils;
-import com.sishuok.es.common.utils.image.CompressPic;
-import com.sishuok.es.common.utils.image.ImgCompressUtil;
 import com.sishuok.es.common.web.entity.AjaxUploadResponse;
 import com.sishuok.es.common.web.upload.FileUploadUtils;
 import com.sishuok.es.common.web.upload.FileUtil;
@@ -38,7 +34,6 @@ import com.sishuok.es.common.web.upload.exception.FileNameLengthLimitExceededExc
 import com.sishuok.es.common.web.upload.exception.InvalidExtensionException;
 import com.sishuok.es.core.common.DataStatusEnum;
 import com.sishuok.es.core.web.controller.BaseDataController;
-import com.sishuok.es.showcase.sample.entity.Sex;
 
 /**
  * <p>
@@ -153,34 +148,25 @@ public class AttachmentImageController<M extends AttachmentImageInfo> extends Ba
 			int srcHeight = src.getHeight(null);
 			m.setWidth(srcWidth);
 			m.setHeight(srcHeight);
-			if (srcWidth >= srcHeight) {
-				ImgCompressUtil.scale2(m.getStorePath(), smallFilePath, AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.y,
-						AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.x, false);
-			} else {
-				ImgCompressUtil.scale2(m.getStorePath(), smallFilePath, AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.y,
-						AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.x, false);
-			}
-
-			//			CompressPic compressPic = new CompressPic();
 			//			if (srcWidth >= srcHeight) {
-			//				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.x,
-			//						AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.y);
+			//				ImgCompressUtil.scale2(m.getStorePath(), smallFilePath, AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.y,
+			//						AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.x, false);
 			//			} else {
-			//				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.x,
-			//						AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.y);
+			//				ImgCompressUtil.scale2(m.getStorePath(), smallFilePath, AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.y,
+			//						AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.x, false);
 			//			}
-			//			compressPic.setInputFileName(m.getStorePath());
-			//			compressPic.setOutputFileName(smallFilePath);
-			//			compressPic.compressPic();
 
-			//			BufferedImage tag = new BufferedImage((int) w, (int) h, BufferedImage.TYPE_INT_RGB);
-			//
-			//			tag.getGraphics().drawImage(src.getScaledInstance(w, h, Image.SCALE_SMOOTH), 0, 0, null);
-			//			FileOutputStream out = new FileOutputStream(imgdist);
-			//			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-			//			encoder.encode(tag);
-			//			out.close();
-
+			CompressPic compressPic = new CompressPic();
+			if (srcWidth >= srcHeight) {
+				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.x,
+						AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.y);
+			} else {
+				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.x,
+						AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.y);
+			}
+			compressPic.setInputFileName(m.getStorePath());
+			compressPic.setOutputFileName(smallFilePath);
+			compressPic.compressPic();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

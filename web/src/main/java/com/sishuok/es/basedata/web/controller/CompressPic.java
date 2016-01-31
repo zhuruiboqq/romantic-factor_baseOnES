@@ -1,4 +1,4 @@
-package com.sishuok.es.common.utils.image;
+package com.sishuok.es.basedata.web.controller;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -12,8 +12,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-//import com.sun.image.codec.jpeg.JPEGCodec;
-//import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 public class CompressPic {
 
@@ -160,10 +160,9 @@ public class CompressPic {
 				}
 				FileOutputStream out = new FileOutputStream(outputDir + outputFileName);
 				// JPEGImageEncoder可适用于其他图片类型的转换
-				//TODO 要反注解
-//				JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-//				encoder.encode(tag);
-//				out.close();
+				JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+				encoder.encode(tag);
+				out.close();
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();

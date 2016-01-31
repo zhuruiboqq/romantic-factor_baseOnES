@@ -31,7 +31,7 @@
 		</a></li>
 	</ul>
 
-	<form:form id="editForm" method="post" commandName="m" cssClass="form-horizontal">
+	<form:form id="editForm" method="post" modelAttribute="m" cssClass="form-horizontal">
 		<!--上一个地址 如果提交方式是get 需要加上-->
 		<%--<es:BackURL hiddenInput="true"/>--%>
 

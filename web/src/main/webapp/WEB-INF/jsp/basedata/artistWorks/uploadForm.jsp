@@ -12,7 +12,7 @@
 		</a></li>
 	</ul>
 
-	<form:form id="fileupload" method="post" commandName="m" cssClass="form-horizontal" enctype="multipart/form-data">
+	<form:form id="fileupload" method="post" modelAttribute="m" cssClass="form-horizontal" enctype="multipart/form-data">
 		<es:showGlobalError commandName="m" />
 
 		<form:hidden path="id" />

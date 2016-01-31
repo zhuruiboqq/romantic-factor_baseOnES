@@ -28,7 +28,6 @@ import com.sishuok.es.common.utils.GenericUtil;
  * <p>
  * Version: 1.0
  */
-@SessionAttributes("m")
 public abstract class BaseController<M extends AbstractEntity, ID extends Serializable> {
 
 	/**

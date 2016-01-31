@@ -5,7 +5,7 @@
 
     <%@include file="nav.jspf"%>
 
-    <form:form id="editForm" method="post" commandName="m" cssClass="form-horizontal" enctype="multipart/form-data">
+    <form:form id="editForm" method="post" modelAttribute="m" cssClass="form-horizontal" enctype="multipart/form-data">
         <es:showGlobalError commandName="m"/>
 
         <form:hidden path="id"/>

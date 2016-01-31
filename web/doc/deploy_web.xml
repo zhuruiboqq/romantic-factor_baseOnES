@@ -21,6 +21,7 @@
 		<copy todir="${BackupLocation}/${CurrentDate}/WEB-INF/classes/" overwrite="true">
 			<fileset dir="target/classes/">
 				<exclude name="resources.properties" />
+				<exclude name="spring-config.xml" />
 			</fileset>
 		</copy>
 		<copy todir="${BackupLocation}/${CurrentDate}/WEB-INF/lib/" overwrite="true">

@@ -124,10 +124,11 @@ public abstract class BaseCRUDController<M extends AbstractEntity, ID extends Se
 	}
 
 	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public String create(Model model, @Valid M m, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String create(Model model, @Valid @ModelAttribute M m, BindingResult result, RedirectAttributes redirectAttributes) {
 		if (m == null) {
 			//TODO 应使用框架的绑定
 			m = (M) result.getTarget();
+			model.containsAttribute("m");
 		}
 		if (permissionList != null) {
 			this.permissionList.assertHasCreatePermission();
@@ -155,8 +156,8 @@ public abstract class BaseCRUDController<M extends AbstractEntity, ID extends Se
 	}
 
 	@RequestMapping(value = "{id}/update", method = RequestMethod.POST)
-	public String update(Model model, @Valid M m, BindingResult result, @RequestParam(value = Constants.BACK_URL, required = false) String backURL,
-			RedirectAttributes redirectAttributes) {
+	public String update(Model model, @Valid @ModelAttribute M m, BindingResult result,
+			@RequestParam(value = Constants.BACK_URL, required = false) String backURL, RedirectAttributes redirectAttributes) {
 		//		if (m == null){
 		//TODO 应使用框架的绑定
 		m = (M) result.getTarget();
@@ -193,8 +194,9 @@ public abstract class BaseCRUDController<M extends AbstractEntity, ID extends Se
 		if (permissionList != null) {
 			this.permissionList.assertHasDeletePermission();
 		}
-
+		checkBeforeDelete((ID) m.getId());
 		baseService.delete(m);
+		processAfterDelete((ID) m.getId());
 
 		redirectAttributes.addFlashAttribute(Constants.MESSAGE, "删除成功");
 		return redirectToUrl(backURL);
@@ -207,11 +209,27 @@ public abstract class BaseCRUDController<M extends AbstractEntity, ID extends Se
 		if (permissionList != null) {
 			this.permissionList.assertHasDeletePermission();
 		}
-
+		checkBeforeDelete(ids);
 		baseService.delete(ids);
+		processAfterDelete(ids);
 
 		redirectAttributes.addFlashAttribute(Constants.MESSAGE, "删除成功");
 		return redirectToUrl(backURL);
 	}
 
+	public void checkBeforeDelete(Serializable id) {
+
+	}
+
+	public void checkBeforeDelete(Serializable[] ids) {
+
+	}
+
+	public void processAfterDelete(Serializable id) {
+
+	}
+
+	public void processAfterDelete(Serializable[] ids) {
+
+	}
 }

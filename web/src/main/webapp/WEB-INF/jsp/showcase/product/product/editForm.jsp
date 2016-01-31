@@ -47,7 +47,7 @@
         </li>
     </ul>
 
-    <form:form id="editForm" method="post" commandName="m" cssClass="form-horizontal">
+    <form:form id="editForm" method="post" modelAttribute="m" cssClass="form-horizontal">
           <es:showGlobalError commandName="m"/>
 
             <form:hidden path="id"/>
