@@ -6,6 +6,7 @@
 package com.sishuok.es.common.web.controller;
 
 import java.io.Serializable;
+import java.lang.reflect.Modifier;
 
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.ui.Model;
@@ -14,7 +15,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.sishuok.es.common.entity.AbstractEntity;
 import com.sishuok.es.common.utils.GenericUtil;
@@ -69,6 +69,9 @@ public abstract class BaseController<M extends AbstractEntity, ID extends Serial
 	@ModelAttribute("m")
 	protected M newModel() {
 		try {
+			if (Modifier.isAbstract(entityClass.getModifiers())) {//如果实体是抽像类，则返回空。
+				return null;
+			}
 			return (M) entityClass.newInstance();
 		} catch (Exception e) {
 			throw new IllegalStateException("can not instantiated model : " + this.entityClass, e);

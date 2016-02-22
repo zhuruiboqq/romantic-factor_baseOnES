@@ -10,6 +10,8 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 
+import javax.persistence.MappedSuperclass;
+
 /**
  * 抽象实体基类，如果主键是数据库端自动生成 请使用{@link BaseEntity}，如果是Oracle 请使用{@link BaseOracleEntity}
  * <p/>
@@ -17,6 +19,8 @@ import java.io.Serializable;
  * <p>Date: 13-3-20 下午8:38
  * <p>Version: 1.0
  */
+@SuppressWarnings("serial")
+@MappedSuperclass
 public abstract class AbstractEntity<ID extends Serializable> implements Persistable<ID> {
 
     public abstract ID getId();

@@ -1,7 +1,7 @@
 package com.sishuok.es.basedata.entity;
 
 public enum ArtistTypeEnum {
-	makeup("化妆师"), photographer("摄影师");
+	makeup("化妆师"), photographer("摄影师"), dress("婚纱摄影");
 
 	private final String info;
 

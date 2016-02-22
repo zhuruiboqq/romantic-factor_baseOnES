@@ -9,12 +9,15 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Maps;
+import com.sishuok.es.basedata.entity.ArtistTypeEnum;
 import com.sishuok.es.basedata.entity.ArtistWorksInfo;
 import com.sishuok.es.basedata.entity.AttachmentImageInfo;
+import com.sishuok.es.basedata.repository.ArtistWorksRepository;
 import com.sishuok.es.common.entity.search.Searchable;
 import com.sishuok.es.common.web.upload.FileUtil;
 import com.sishuok.es.core.service.CoreEntryService;
@@ -32,6 +35,10 @@ public class ArtistWorksService<M extends ArtistWorksInfo> extends CoreEntryServ
 
 	@Autowired
 	private AttachmentImageService<AttachmentImageInfo> attachmentImageService;
+
+	public Page<ArtistWorksInfo> findAllByArtist(Long artistID, ArtistTypeEnum artistType, Pageable pageable) {
+		return ((ArtistWorksRepository) getCoreRepository()).findAllByArtist(artistID, artistType, pageable);
+	}
 
 	@Override
 	public void delete(Long[] ids) {

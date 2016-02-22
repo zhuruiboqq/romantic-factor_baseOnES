@@ -149,6 +149,7 @@
                 /jcaptcha* = anon
                 /logout = logout
                 /login = jCaptchaValidate,authc
+                /front/** = anon
                 /** = sysUser,onlineSession,user,syncOnlineSession,perms,roles
             </value>
         </property>
