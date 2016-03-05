@@ -76,6 +76,7 @@ public class AttachmentImageController<M extends AttachmentImageInfo> extends Ba
 	public AjaxUploadResponse ajaxUpload(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "files[]", required = false) MultipartFile[] files) {
 		System.out.println(request.getParameter("artist") + " " + request.getParameter("artist.id"));
+		System.out.println(request.getParameter("uploadType"));
 		//The file upload plugin makes use of an Iframe Transport module for browsers like Microsoft Internet Explorer and Opera, which do not yet support XMLHTTPRequest file uploads.
 		response.setContentType("text/plain");
 
@@ -107,6 +108,7 @@ public class AttachmentImageController<M extends AttachmentImageInfo> extends Ba
 				m.setSizeInByte(size);
 				m.setSize(FileUtil.getFileLength(size));
 				m.setStorePath(desc.getAbsolutePath());
+				m.setPermission(request.getParameter("uploadType"));
 
 				reduceImg(m);
 
@@ -157,12 +159,16 @@ public class AttachmentImageController<M extends AttachmentImageInfo> extends Ba
 			//			}
 
 			CompressPic compressPic = new CompressPic();
-			if (srcWidth >= srcHeight) {
-				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.x,
-						AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.y);
+			if ("personImage".equals(m.getPermission())) {
+				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Person.x, AttachmentImageConstant.ImageSize.Artist_Person.y);
 			} else {
-				compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.x,
-						AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.y);
+				if (srcWidth >= srcHeight) {
+					compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.x,
+							AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.y);
+				} else {
+					compressPic.setWidthAndHeight(AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.x,
+							AttachmentImageConstant.ImageSize.Artist_Works_Max_Height.y);
+				}
 			}
 			compressPic.setInputFileName(m.getStorePath());
 			compressPic.setOutputFileName(smallFilePath);

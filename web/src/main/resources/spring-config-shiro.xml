@@ -146,6 +146,7 @@
         <property name="filterChainDefinitions">
             <value>
                 /static/** = anon
+                /upload/** = anon
                 /jcaptcha* = anon
                 /logout = logout
                 /login = jCaptchaValidate,authc

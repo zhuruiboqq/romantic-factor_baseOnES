@@ -39,6 +39,30 @@
 
 		<form:hidden path="id" />
 
+		<div class="control-group" style="margin-bottom: 0px;<c:if test="${empty m.personImage.id}">display: none</c:if>">
+			<label for="files" class="control-label"></label>
+			<div class="controls">
+				<div class="ajax-upload-view">
+					<div class='alert alert-success'>
+						<c:if test="${not empty m.personImage.id}">
+							<a href='${ctx}/${m.personImage.displayURL }' target='_blank'><img src='${ctx}/${m.personImage.displaySmallURL}' title='${m.personImage.name }'
+								height='120px' /></a>
+						</c:if>
+					</div>
+				</div>
+				<form:hidden path="personImage.id" />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label for="files" class="control-label">个人相片</label>
+			<div class="controls">
+				<label for="files" class="btn btn-success fileinput-button"> <i class="icon-plus icon-white"></i> <span>添加文件...</span> <input type="file"
+					id="files" name="files[]" data-url="${ctx}/basedata/attachmentImage/ajaxUpload?uploadType=personImage" multiple>
+				</label>
+			</div>
+		</div>
+
 		<div class="control-group">
 			<form:label path="name" cssClass="control-label">名称</form:label>
 			<div class="controls">
@@ -144,11 +168,11 @@
 				</a>
 			</div>
 		</div>
-
-
 	</form:form>
 </div>
 <es:contentFooter />
+<%@include file="/WEB-INF/jsp/common/import-upload-simple-js.jspf"%>
+
 <script type="text/javascript">
 	$(function() {
 		<c:choose>
@@ -172,5 +196,54 @@
 		<es:showFieldError commandName="m"/>
 		</c:otherwise>
 		</c:choose>
+
+		$('.fileinput-button input[type="file"]').fileupload({
+			dataType : "json"
+		});
+		$('.fileinput-button input[type="file"]').fileupload("option", {
+			progressall : function(e, data) {
+				var view = $(".ajax-upload-view");
+				view.parent().parent().show();
+				var progressBar = view.find(".progress");
+				if (progressBar.size() == 0) {
+					var progressBarTemplate = '<div class="progress progress-striped">' + '<div class="bar"></div>' + '</div>';
+					progressBar = view.append(progressBarTemplate);
+				}
+				var progress = parseInt(data.loaded / data.total * 100, 10);
+				progressBar.find(".bar").css("width", progress + "%");
+			},
+			start : function(e) {
+				$(".ajax-upload-view").html("");
+				var submitBtn = $(this).closest("form").find(":submit");
+				submitBtn.data("value", submitBtn.val()).val("上传文件中...").prop("disabled", true);
+			},
+			//上传完成
+			done : function(e, data) {
+				$.each(data.result.files, function(index, file) {
+					if (file.error) {
+						$(".ajax-upload-view").html("<div class='alert alert-error'>" + file.error + "</div>");
+					} else {
+						$("[name='personImage\.id']").val(file.id);
+						var msg = "<div class='alert alert-success'><strong>上传成功！</strong><br/>{preview}</div>";
+						var preview = "";
+						var url = "${ctx}" + "/" + file.url;
+						var thumbnail_url = ctx + "/" + file.thumbnail_url;
+						if ($.app.isImage(file.name)) {
+							preview = "<a href='{url}' target='_blank'><img src='{thumbnail_url}' title='{name}' height='120px'/></a>"
+						} else {
+							preview = "<a href='{url}' target='_blank'>{name}</a>"
+						}
+						preview = preview.replace("{url}", url).replace("{thumbnail_url}", thumbnail_url).replace("{name}", file.name);
+						msg = msg.replace("{preview}", preview);
+						$(".ajax-upload-view").html(msg);
+
+					}
+				});
+				var submitBtn = $(this).closest("form").find(":submit");
+				submitBtn.val(submitBtn.data("value")).prop("disabled", false);
+			}
+		});
+		var validationEngine = $("#editForm").validationEngine();
+		<es:showFieldError commandName="upload"/>
 	});
 </script>

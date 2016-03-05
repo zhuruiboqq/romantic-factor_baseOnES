@@ -29,8 +29,7 @@
 				<include name="es-common-1.0-SNAPSHOT.jar" />
 			</fileset>
 		</copy>
-		<zip destfile="${BackupLocation}/es-web_${CurrentDate}.zip" basedir="${BackupLocation}/${CurrentDate}">
-		</zip>
+		<zip destfile="${BackupLocation}/es-web_${CurrentDate}.zip" basedir="${BackupLocation}/${CurrentDate}" />
 		<delete dir="${BackupLocation}/${CurrentDate}" ></delete>
 	</target>
 </project>

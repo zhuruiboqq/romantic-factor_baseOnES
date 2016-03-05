@@ -32,21 +32,6 @@ import com.sishuok.es.core.common.DataStatusEnum;
 public class DisplayController {
 	private static Logger logger = LoggerFactory.getLogger(DisplayController.class);
 
-	//	@Autowired
-	//	private WeddingParamService weddingParamService;
-	//	@Autowired
-	//	private AttachmentImageService attachmentImageService;
-	//	@Autowired
-	//	private PhotoerService photoerService;
-	//	@Autowired
-	//	private PhotoerWorksService photoerWorksService;
-	//	@Autowired
-	//	private MakeupMakeerService makeupMakeerService;
-	//	@Autowired
-	//	private MakeupWorksService makeupWorksService;
-	//	@Autowired
-	//	private DressService dressService;
-
 	@Autowired
 	private ArtistService<ArtistInfo> artistService;
 	@Autowired
@@ -82,26 +67,30 @@ public class DisplayController {
 		PageRequest pageable = new PageRequest(pageHandler.getCurPageIndex() - 1, pageHandler.getPerPageSize(), new Sort(Direction.ASC, "seq"));
 
 		Page<ArtistWorksInfo> pageResult = null;
-//		try {
-//			Map<String, Object> searchParams = Maps.newHashMap();
-//			searchParams.put("artist.artistType_eq", artistType.name());
-//			searchParams.put("artist.dataStatus_eq", DataStatusEnum.enable.name());
-//			searchParams.put("artist.id_eq", artistID);
-//			Searchable searchable = Searchable.newSearchable(searchParams);
-//			searchable.setPage(pageable);
-//			//		searchable.markConverted();
-//			pageResult = artistWorksService.findAll(searchable);
-//			System.out.println(pageResult.getTotalElements());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+
+		/*
+		 * 不生效，有错误
+		 * try {
+			Map<String, Object> searchParams = Maps.newHashMap();
+			searchParams.put("artist.artistType_eq", artistType.name());
+			searchParams.put("artist.dataStatus_eq", DataStatusEnum.enable.name());
+			searchParams.put("artist.id_eq", artistID);
+			Searchable searchable = Searchable.newSearchable(searchParams);
+			searchable.setPage(pageable);
+			//		searchable.markConverted();
+			pageResult = artistWorksService.findAll(searchable);
+			System.out.println(pageResult.getTotalElements());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		/* 可以查询，推荐做法
 		System.out.println("======================================");
 		try {
 			pageResult = artistWorksService.findAllByArtist(artistID, artistType, pageable);
 			System.out.println(pageResult.getTotalElements());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 		System.out.println("======================================");
 		try {
 			CriteriaCustom<ArtistWorksInfo> c = new CriteriaCustom<ArtistWorksInfo>();

@@ -1,5 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="/WEB-INF/jsp/front/tpl/taglibs.jsp" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ include file="/WEB-INF/jsp/front/tpl/taglibs.jsp"%>
 <article class="">
 	<div class="footer_name_content dress_not_footer">
 		<div class="footer_top">
@@ -47,14 +47,16 @@
 		<c:if test="${pageHandler.curPageIndex gt 1 }">
 			<a class="pre_btn" href="${param.currentPageURL}?page=${pageHandler.curPageIndex-1}">${pageHandler.curPageIndex-1}</a>
 		</c:if>
-		<a class="this_btn" href="${param.currentPageURL}?page=${pageHandler.curPageIndex}">${pageHandler.curPageIndex}</a>
+
+		<a class="this_btn" href="#">${pageHandler.totalPageSize==0 ? "  没 有 数 据  " : pageHandler.curPageIndex}</a>
+
 		<c:if test="${pageHandler.curPageIndex lt pageHandler.totalPageSize}">
 			<a class="next_btn" href="${param.currentPageURL}?page=${pageHandler.curPageIndex+1}">${pageHandler.curPageIndex+1}</a>
 		</c:if>
 		<c:if test="${pageHandler.curPageIndex+1 lt pageHandler.totalPageSize}">
 			<a class="next_btn" href="${param.currentPageURL}?page=${pageHandler.curPageIndex+2}">${pageHandler.curPageIndex+2}</a>
 		</c:if>
-		<c:if test="${pageHandler.curPageIndex ne pageHandler.totalPageSize}">
+		<c:if test="${pageHandler.curPageIndex ne pageHandler.totalPageSize and pageHandler.totalPageSize ne 0 }">
 			<a href="${param.currentPageURL}?page=${pageHandler.curPageIndex+1}">下一页</a>
 			<a class="fri_btn" href="${param.currentPageURL}?page=${pageHandler.totalPageSize}">尾頁</a>
 		</c:if>

@@ -557,7 +557,7 @@ footer span{margin:auto 5px;}
 .privacy_two{height:140px;}
 .privacy_three{height:255px;}
 .privacy_four{height:150px;}
-.privacy_five{height:220px;}
+.privacy_five{height:200px;}
 .about_privacy_bottom_info{
 	margin-left:155px;
 	box-sizing:border-box;
@@ -583,7 +583,7 @@ footer span{margin:auto 5px;}
 .about_privacy_bottom_info .text_three{
 	font-size:14px;
 	color:#696969;
-	margin-top:18px;
+	margin-top:8px;
 }
 .about_privacy_bottom_info .text_four{
 	font-size:30px;

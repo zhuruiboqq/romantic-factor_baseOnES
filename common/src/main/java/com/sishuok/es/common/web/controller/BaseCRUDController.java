@@ -124,11 +124,10 @@ public abstract class BaseCRUDController<M extends AbstractEntity, ID extends Se
 	}
 
 	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public String create(Model model, @Valid @ModelAttribute M m, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String create(Model model, @Valid @ModelAttribute("m") M m, BindingResult result, RedirectAttributes redirectAttributes) {
 		if (m == null) {
 			//TODO 应使用框架的绑定
 			m = (M) result.getTarget();
-			model.containsAttribute("m");
 		}
 		if (permissionList != null) {
 			this.permissionList.assertHasCreatePermission();

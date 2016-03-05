@@ -20,7 +20,7 @@ import com.sishuok.es.core.entity.BaseDataInfo;
 public class ArtistInfo extends BaseDataInfo {
 	@OneToOne
 	@JoinColumn(name = "personImageID")
-	private AttachmentImageInfo personImage;
+	private AttachmentImageInfo personImage = new AttachmentImageInfo();
 	private String region;//所属区域
 	private String organization;//所属机构
 	private String weixin;//微信

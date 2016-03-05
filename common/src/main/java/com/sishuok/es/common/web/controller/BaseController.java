@@ -66,7 +66,7 @@ public abstract class BaseController<M extends AbstractEntity, ID extends Serial
 		return viewPrefix;
 	}
 
-	@ModelAttribute("m")
+//	@ModelAttribute("m")
 	protected M newModel() {
 		try {
 			if (Modifier.isAbstract(entityClass.getModifiers())) {//如果实体是抽像类，则返回空。

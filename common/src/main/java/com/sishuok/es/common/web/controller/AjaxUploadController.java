@@ -59,7 +59,7 @@ public class AjaxUploadController {
     public AjaxUploadResponse ajaxUpload(
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam(value = "files[]", required = false) MultipartFile[] files) {
-
+ 
         //The file upload plugin makes use of an Iframe Transport module for browsers like Microsoft Internet Explorer and Opera, which do not yet support XMLHTTPRequest file uploads.
         response.setContentType("text/plain");
 

@@ -1,8 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="/WEB-INF/jsp/front/tpl/taglibs.jsp" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ include file="/WEB-INF/jsp/front/tpl/taglibs.jsp"%>
 <ul class="dress_content_list fix">
 	<c:forEach var="worksItem" items="${pageHandler.curPageResultList}" varStatus="varStatus">
-		<li ${varStatus.index%4==0?"class=\"dress_content_list_fri\"":"" }><a href="JavaScript:;"><img src="${ctx}/${worksItem.work.displaySmallURL}"  name="${ctx}/${worksItem.work.displayURL}"/></a> <%-- <span>${worksItem.type}</span>
+		<li ${varStatus.index%4==0?"class=\"dress_content_list_fri\"":"" }><a href="JavaScript:;"><img
+				src="${ctx}/${worksItem.work.displaySmallURL}" name="${ctx}/${worksItem.work.displayURL}" /></a> <%-- <span>${worksItem.type}</span>
 		 <span>${worksItem.day}</span> --%></li>
 	</c:forEach>
 
@@ -23,14 +24,16 @@
 	<c:if test="${pageHandler.curPageIndex gt 1 }">
 		<a class="pre_btn" href="${param.currentPageURL}?page=${pageHandler.curPageIndex-1}&${param.detailURLParams}">${pageHandler.curPageIndex-1}</a>
 	</c:if>
-	<a class="this_btn" href="${param.currentPageURL}?page=${pageHandler.curPageIndex}&${param.detailURLParams}">${pageHandler.curPageIndex}</a>
+
+	<a class="this_btn" href="#">${pageHandler.totalPageSize==0 ? "  没 有 数 据  " : pageHandler.curPageIndex}</a>
+
 	<c:if test="${pageHandler.curPageIndex lt pageHandler.totalPageSize}">
 		<a class="next_btn" href="${param.currentPageURL}?page=${pageHandler.curPageIndex+1}&${param.detailURLParams}">${pageHandler.curPageIndex+1}</a>
 	</c:if>
 	<c:if test="${pageHandler.curPageIndex+1 lt pageHandler.totalPageSize}">
 		<a class="next_btn" href="${param.currentPageURL}?page=${pageHandler.curPageIndex+2}&${param.detailURLParams}">${pageHandler.curPageIndex+2}</a>
 	</c:if>
-	<c:if test="${pageHandler.curPageIndex ne pageHandler.totalPageSize}">
+	<c:if test="${pageHandler.curPageIndex ne pageHandler.totalPageSize and pageHandler.totalPageSize ne 0}">
 		<a href="${param.currentPageURL}?page=${pageHandler.curPageIndex+1}&${param.detailURLParams}">下一页</a>
 		<a class="fri_btn" href="${param.currentPageURL}?page=${pageHandler.totalPageSize}&${param.detailURLParams}">尾頁</a>
 	</c:if>

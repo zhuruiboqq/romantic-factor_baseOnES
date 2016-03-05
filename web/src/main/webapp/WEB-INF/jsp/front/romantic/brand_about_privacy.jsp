@@ -107,10 +107,15 @@
 		<div class="about_privacy_bottom_info">
 			<p class="text_one">联系方式</p>
 			<p class="text_two">CONTACT INFORMARION</p>
+			<!-- 
 			<P class="text_three">中国广州香港深圳上海杭州华南大厦10000号</P>
 			<div class="line"></div>
-			<P class="text_four">+86-888-89255415</P>
-			<P class="text_five">E-MAIL:123456789@hot.com</P>
+			 -->
+			<P class="text_three">QQ客服1: 1184902004</P>
+			<P class="text_three">QQ客服2: 2912650681</P>
+			<P class="text_three">QQ客服3: 913864080</P>
+			<P class="text_three">QQ客服4: 2774776698</P>
+			<P class="text_five">E-MAIL:2912650681@qq.com</P>
 		</div>
 	</div>
 </article>

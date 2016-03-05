@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Maps;
 import com.sishuok.es.basedata.entity.ArtistTypeEnum;
@@ -19,7 +18,6 @@ import com.sishuok.es.basedata.entity.ArtistWorksInfo;
 import com.sishuok.es.basedata.entity.AttachmentImageInfo;
 import com.sishuok.es.basedata.repository.ArtistWorksRepository;
 import com.sishuok.es.common.entity.search.Searchable;
-import com.sishuok.es.common.web.upload.FileUtil;
 import com.sishuok.es.core.service.CoreEntryService;
 
 /**
@@ -47,10 +45,6 @@ public class ArtistWorksService<M extends ArtistWorksInfo> extends CoreEntryServ
 		Searchable searchable = Searchable.newSearchable(searchParams);
 		Page<M> page = getCoreRepository().findAll(searchable);
 		for (M m : page.getContent()) {
-			if (!StringUtils.isEmpty(m.getWork().getStoreSmallPath())) {
-				FileUtil.deleteFile(m.getWork().getStoreSmallPath());//小图
-			}
-			FileUtil.deleteFile(m.getWork().getStorePath());//大图
 			attachmentImageService.delete(m.getWork().getId());
 		}
 		super.delete(ids);

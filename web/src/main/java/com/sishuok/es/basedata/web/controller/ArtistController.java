@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sishuok.es.basedata.entity.ArtistInfo;
 import com.sishuok.es.basedata.entity.ArtistTypeEnum;
+import com.sishuok.es.basedata.entity.AttachmentImageInfo;
 import com.sishuok.es.basedata.service.ArtistService;
 import com.sishuok.es.common.entity.search.SearchRequest;
 import com.sishuok.es.common.entity.search.Searchable;
@@ -47,9 +48,33 @@ public class ArtistController<M extends ArtistInfo> extends BaseDataController<M
 	}
 
 	@Override
+	protected M newModel() {
+		M m = super.newModel();
+		m.setPersonImage(new AttachmentImageInfo());
+		return m;
+	}
+
+	@Override
 	protected void setCommonData(Model model) {
 		super.setCommonData(model);
-		model.addAttribute("artistTypeEnumList", ArtistTypeEnum.values());
+		model.addAttribute("artistTypeEnumList", new ArtistTypeEnum[] { ArtistTypeEnum.makeup, ArtistTypeEnum.photographer });//只显示两个
+		//		model.addAttribute("artistTypeEnumList", ArtistTypeEnum.values());//显示全部
+	}
+
+	@Override
+	public String showUpdateForm(@PathVariable("id") M m, Model model) {
+		if (m.getPersonImage() == null) {
+			m.setPersonImage(new AttachmentImageInfo());
+		}
+		return super.showUpdateForm(m, model);
+	}
+
+	@Override
+	public String showDeleteForm(@PathVariable("id") M m, Model model) {
+		if (m.getPersonImage() == null) {
+			m.setPersonImage(new AttachmentImageInfo());
+		}
+		return super.showDeleteForm(m, model);
 	}
 
 	/**

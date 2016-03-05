@@ -18,10 +18,10 @@ import com.sishuok.es.core.entity.CoreEntryInfo;
 public class ArtistWorksInfo extends CoreEntryInfo {
 	@OneToOne
 	@JoinColumn(name = "artistID")
-	private ArtistInfo artist;
+	private ArtistInfo artist = new ArtistInfo();
 	@OneToOne
 	@JoinColumn(name = "workID")
-	private AttachmentImageInfo work;
+	private AttachmentImageInfo work = new AttachmentImageInfo();
 
 	public ArtistInfo getArtist() {
 		return artist;
