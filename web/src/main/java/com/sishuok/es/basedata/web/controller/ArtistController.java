@@ -20,6 +20,7 @@ import com.sishuok.es.basedata.entity.ArtistInfo;
 import com.sishuok.es.basedata.entity.ArtistTypeEnum;
 import com.sishuok.es.basedata.entity.AttachmentImageInfo;
 import com.sishuok.es.basedata.service.ArtistService;
+import com.sishuok.es.common.entity.search.SearchOperator;
 import com.sishuok.es.common.entity.search.SearchRequest;
 import com.sishuok.es.common.entity.search.Searchable;
 import com.sishuok.es.common.web.bind.annotation.PageableDefaults;
@@ -62,6 +63,13 @@ public class ArtistController<M extends ArtistInfo> extends BaseDataController<M
 	}
 
 	@Override
+	public String listTable(Searchable searchable, Model model) {
+		System.out.println("listTable................");
+		searchable.addSearchFilter("artistType", SearchOperator.ne, ArtistTypeEnum.dress);
+		return super.listTable(searchable, model);
+	}
+
+	@Override
 	public String showUpdateForm(@PathVariable("id") M m, Model model) {
 		if (m.getPersonImage() == null) {
 			m.setPersonImage(new AttachmentImageInfo());
@@ -87,7 +95,9 @@ public class ArtistController<M extends ArtistInfo> extends BaseDataController<M
 	@Override
 	protected boolean hasError(M m, BindingResult result) {
 		Assert.notNull(m);
-
+		if (m.getPersonImage() != null && m.getPersonImage().getId() == null) {
+			m.setPersonImage2(null);
+		}
 		//        //字段错误 前台使用<es:showFieldError commandName="showcase/sample"/> 显示
 		//        if (m.getBirthday() != null && m.getBirthday().after(new Date())) {
 		//            //前台字段名（前台使用[name=字段名]取得dom对象） 错误消息键。。

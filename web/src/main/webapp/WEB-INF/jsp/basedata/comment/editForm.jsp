@@ -4,25 +4,25 @@
 <div class="panel">
 
 	<ul class="nav nav-tabs">
-		<shiro:hasPermission name="basedata:artist:create">
+		<shiro:hasPermission name="basedata:comment:create">
 			<c:if test="${op eq '新增'}">
-				<li ${op eq '新增' ? 'class="active"' : ''}><a href="${ctx}/basedata/artist/create?BackURL=<es:BackURL/>"> <i class="icon-file-alt"></i> 新增
+				<li ${op eq '新增' ? 'class="active"' : ''}><a href="${ctx}/basedata/comment/create?BackURL=<es:BackURL/>"> <i class="icon-file-alt"></i> 新增
 				</a></li>
 			</c:if>
 		</shiro:hasPermission>
 
 
 		<c:if test="${not empty m.id}">
-			<li ${op eq '查看' ? 'class="active"' : ''}><a href="${ctx}/basedata/artist/${m.id}?BackURL=<es:BackURL/>"> <i class="icon-eye-open"></i> 查看
+			<li ${op eq '查看' ? 'class="active"' : ''}><a href="${ctx}/basedata/comment/${m.id}?BackURL=<es:BackURL/>"> <i class="icon-eye-open"></i> 查看
 			</a></li>
-			<shiro:hasPermission name="basedata:artist:update">
-				<li ${op eq '修改' ? 'class="active"' : ''}><a href="${ctx}/basedata/artist/${m.id}/update?BackURL=<es:BackURL/>"> <i class="icon-edit"></i>
+			<shiro:hasPermission name="basedata:comment:update">
+				<li ${op eq '修改' ? 'class="active"' : ''}><a href="${ctx}/basedata/comment/${m.id}/update?BackURL=<es:BackURL/>"> <i class="icon-edit"></i>
 						修改
 				</a></li>
 			</shiro:hasPermission>
 
-			<shiro:hasPermission name="basedata:artist:delete">
-				<li ${op eq '删除' ? 'class="active"' : ''}><a href="${ctx}/basedata/artist/${m.id}/delete?BackURL=<es:BackURL/>"> <i class="icon-trash"></i>
+			<shiro:hasPermission name="basedata:comment:delete">
+				<li ${op eq '删除' ? 'class="active"' : ''}><a href="${ctx}/basedata/comment/${m.id}/delete?BackURL=<es:BackURL/>"> <i class="icon-trash"></i>
 						删除
 				</a></li>
 			</shiro:hasPermission>
@@ -64,13 +64,13 @@
 		</div>
 
 		<div class="control-group">
-			<form:label path="name" cssClass="control-label">中文姓名*</form:label>
+			<form:label path="name" cssClass="control-label">名称</form:label>
 			<div class="controls">
 				<form:input path="name" cssClass="validate[required]" placeholder="中文姓名" />
 			</div>
 		</div>
 		<div class="control-group">
-			<form:label path="simpleName" cssClass="control-label">英文名*</form:label>
+			<form:label path="simpleName" cssClass="control-label">昵称</form:label>
 			<div class="controls">
 				<form:input path="simpleName" cssClass="validate[required]" placeholder="英文名" />
 			</div>
@@ -96,7 +96,7 @@
 		<div class="control-group">
 			<form:label path="telephone" cssClass="control-label">手机号</form:label>
 			<div class="controls">
-				<form:input path="telephone" placeholder="如13512345678" />
+				<form:input path="telephone" cssClass="validate[required,custom[mobilePhoneNumber]]" placeholder="如13512345678" />
 			</div>
 		</div>
 		<div class="control-group">
@@ -125,23 +125,23 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<form:label path="priority" cssClass="control-label">优先级*</form:label>
+			<form:label path="priority" cssClass="control-label">优先级</form:label>
 			<div class="controls">
 				<form:input path="priority" cssClass="validate[required,custom[integer]]" placeholder="如999" />
 			</div>
 		</div>
 
 		<div class="control-group">
-			<form:label path="artistType" cssClass="control-label">类型*</form:label>
+			<form:label path="commentType" cssClass="control-label">类型</form:label>
 			<div class="controls">
-				<form:select path="artistType" cssClass="validate[required]">
+				<form:select path="commentType" cssClass="validate[required]">
 					<form:option label="请选择" value="" />
-					<form:options items="${artistTypeEnumList}" itemLabel="info"></form:options>
+					<form:options items="${commentTypeEnumList}" itemLabel="info"></form:options>
 				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
-			<form:label path="dataStatus" cssClass="control-label">状态*</form:label>
+			<form:label path="dataStatus" cssClass="control-label">状态</form:label>
 			<div class="controls">
 				<form:select path="dataStatus" cssClass="validate[required]">
 					<form:options items="${dataStatusEnumList}" itemLabel="info"></form:options>

@@ -177,7 +177,6 @@
 
 <script type="text/javascript">
 	$(function() {
-
 		'use strict';
 		//Initialize artist choose
 		$("[name='artist.name']").siblings(".add-on").andSelf().click(function() {
@@ -216,5 +215,7 @@
 
 			alert(urls.join("\r\n"));
 		});
+
+		var validationEngine = $("#fileupload").validationEngine();
 	});
 </script>

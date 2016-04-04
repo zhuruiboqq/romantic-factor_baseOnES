@@ -11,6 +11,7 @@ CREATE TABLE bas_AttachmentImage (
   creatorID INT(11),
   lastUpdateTime TIMESTAMP,
   lastUpdatorID INT(11),
+  dataStatus varchar(30),
   storePath VARCHAR(500),
   storeSmallPath VARCHAR(500),
   storeMidPath VARCHAR(500),
@@ -23,7 +24,6 @@ CREATE TABLE bas_AttachmentImage (
   extName VARCHAR(100),
   width INT(11),
   height INT(11),
-  dataStatus varchar(30),
   PRIMARY KEY (id)
 ) ;;
 
@@ -36,6 +36,7 @@ CREATE TABLE bd_Artist (
   creatorID INT(11),
   lastUpdateTime TIMESTAMP,
   lastUpdatorID INT(11),
+  dataStatus varchar(30),
   personImageID INT(11),
   region VARCHAR(100),
   organization VARCHAR(100),
@@ -48,7 +49,6 @@ CREATE TABLE bd_Artist (
   artistType VARCHAR(20),
   worksPath VARCHAR(200),
    priority INT(11),
-   dataStatus varchar(30),
   PRIMARY KEY (id)
 ) ;;
 
@@ -57,5 +57,23 @@ CREATE TABLE bd_ArtistWorks (
   seq INT(11),
   artistID INT(11) NOT NULL,
   workID INT(11) NOT NULL,
+  PRIMARY KEY (id)
+) ;;
+
+CREATE TABLE bas_Comment (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100),
+  number VARCHAR(100),
+   simpleName VARCHAR(100),
+  createTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  creatorID INT(11),
+  lastUpdateTime TIMESTAMP,
+  lastUpdatorID INT(11),
+  dataStatus varchar(30),
+  address VARCHAR(100),
+  email VARCHAR(100),
+  qq VARCHAR(30),
+  suggestion VARCHAR(256),
+  telephone VARCHAR(30),
   PRIMARY KEY (id)
 ) ;;

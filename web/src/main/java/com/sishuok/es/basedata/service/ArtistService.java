@@ -112,7 +112,8 @@ public class ArtistService<M extends ArtistInfo> extends BaseDataService<M> {
 		List<M> list = findAll(c3);
 		List<Long> personImageIDList = new ArrayList<Long>(ids.length);
 		for (M m : list) {
-			personImageIDList.add(m.getPersonImage().getId());
+			if (m.getPersonImage() != null)
+				personImageIDList.add(m.getPersonImage().getId());
 		}
 		super.delete(ids);
 

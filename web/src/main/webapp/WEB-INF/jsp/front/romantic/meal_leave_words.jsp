@@ -57,6 +57,7 @@
             </div>
             
         </div> 
+        <form name="form" action="${ctx}/front/addMessage.do">
         <div class="leave_words_content">
         	<p style="color:#636363;line-height:30px;font-size:14px;">
             	<strong>合作留言</strong><br />
@@ -105,14 +106,15 @@
                         <div class="shixin_circle left"></div>
                         <span>建议和要求：</span>
                     </div>
-                    <a href="JavaScript:;">提交</a>
-                    <a href="JavaScript:;">重设</a>
+                    <a href="JavaScript: form.submit();">提交</a>
+                    <a href="JavaScript: form.reset();">重设</a>
                 </div>
                 <textarea class="suggestion_area"></textarea>
             </div>
             <div class="leave_words_img right"><img src="${ctx}/static/images/front/leave_words1.jpg" /></div>
         </div>
         <div class="set_meal_across_line meal_leave_words_line"></div>
+        </form>
     </article>
     
     

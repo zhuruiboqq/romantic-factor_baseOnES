@@ -39,6 +39,14 @@ public class ArtistInfo extends BaseDataInfo {
 	}
 
 	public void setPersonImage(AttachmentImageInfo personImage) {
+		if (personImage == null) {
+			this.personImage = new AttachmentImageInfo();
+		} else {
+			this.personImage = personImage;
+		}
+	}
+
+	public void setPersonImage2(AttachmentImageInfo personImage) {
 		this.personImage = personImage;
 	}
 

@@ -37,6 +37,12 @@ public class DisplayController {
 	@Autowired
 	private ArtistWorksService<ArtistWorksInfo> artistWorksService;
 
+	/**获取艺术家信息
+	 * @param model
+	 * @param pageid
+	 * @param artistType
+	 * @return
+	 */
 	private PageHandler getArtistList(Model model, Integer pageid, ArtistTypeEnum artistType) {
 		PageHandler pageHandler = new PageHandler();
 		pageHandler.setCurPageIndex(pageid);
@@ -57,6 +63,14 @@ public class DisplayController {
 		return pageHandler;
 	}
 
+	/**
+	 * 获取艺术家的作品
+	 * @param model spring的模型
+	 * @param pageid 取数当前页
+	 * @param artistID 艺术家ID
+	 * @param artistType 艺术家类型
+	 * @return
+	 */
 	private PageHandler getArtistWorksList(Model model, Integer pageid, Long artistID, ArtistTypeEnum artistType) {
 		PageHandler pageHandler = new PageHandler();
 		pageHandler.setCurPageIndex(pageid);
@@ -91,7 +105,7 @@ public class DisplayController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}*/
-		System.out.println("======================================");
+		logger.debug("======================================Use CriteriaCustom Start");
 		try {
 			CriteriaCustom<ArtistWorksInfo> c = new CriteriaCustom<ArtistWorksInfo>();
 			c.add(RestrictionUtil.eq("artist.artistType", artistType, true));
@@ -104,7 +118,6 @@ public class DisplayController {
 			e.printStackTrace();
 		}
 
-		System.out.println("======================================");
 		pageHandler.setTotalRecordCount(pageResult.getTotalElements());
 		pageHandler.setCurPageResultList(pageResult.getContent());
 		pageHandler.processModel(model);
@@ -178,6 +191,8 @@ public class DisplayController {
 	@RequestMapping(value = "/dress.do")
 	public String dress(HttpServletRequest req, @RequestParam("page") Integer pageid, @RequestParam("type") Long type, Model model) {
 		try {
+//			PageHandler pageHandlerArtist = getArtistList(model, pageid, ArtistTypeEnum.dress);//艺术家信息
+			
 			PageHandler pageHandler = getArtistWorksList(model, pageid, type, ArtistTypeEnum.dress);
 			if (pageHandler == null) {
 				return null;
