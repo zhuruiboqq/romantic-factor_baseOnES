@@ -77,7 +77,7 @@ public class DisplayController {
 		if (pageHandler.getCurPageIndex() < 1) {
 			return null;
 		}
-		Sort sort = new Sort(new Sort.Order(Direction.ASC, "work.rate"),new Sort.Order(Direction.ASC, "seq"));
+		Sort sort = new Sort(new Sort.Order(Direction.DESC, "work.rate"),new Sort.Order(Direction.ASC, "seq"));
 		
 		PageRequest pageable = new PageRequest(pageHandler.getCurPageIndex() - 1, pageHandler.getPerPageSize(), sort);
 
