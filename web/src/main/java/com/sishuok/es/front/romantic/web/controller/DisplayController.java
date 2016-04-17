@@ -77,8 +77,9 @@ public class DisplayController {
 		if (pageHandler.getCurPageIndex() < 1) {
 			return null;
 		}
-
-		PageRequest pageable = new PageRequest(pageHandler.getCurPageIndex() - 1, pageHandler.getPerPageSize(), new Sort(Direction.ASC, "seq"));
+		Sort sort = new Sort(new Sort.Order(Direction.ASC, "work.rate"),new Sort.Order(Direction.ASC, "seq"));
+		
+		PageRequest pageable = new PageRequest(pageHandler.getCurPageIndex() - 1, pageHandler.getPerPageSize(), sort);
 
 		Page<ArtistWorksInfo> pageResult = null;
 
@@ -111,7 +112,7 @@ public class DisplayController {
 			c.add(RestrictionUtil.eq("artist.artistType", artistType, true));
 			c.add(RestrictionUtil.eq("artist.dataStatus", DataStatusEnum.enable, true));
 			c.add(RestrictionUtil.eq("artist.id", artistID, true));
-
+			
 			pageResult = artistWorksService.findAll(c, pageable);
 			System.out.println(pageResult.getTotalElements());
 		} catch (Exception e) {

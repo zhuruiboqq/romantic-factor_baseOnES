@@ -24,6 +24,7 @@ CREATE TABLE bas_AttachmentImage (
   extName VARCHAR(100),
   width INT(11),
   height INT(11),
+  rate DECIMAL(10,4),
   PRIMARY KEY (id)
 ) ;;
 

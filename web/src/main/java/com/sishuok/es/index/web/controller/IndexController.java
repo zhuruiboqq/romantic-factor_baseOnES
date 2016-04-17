@@ -65,9 +65,4 @@ public class IndexController {
 
         return "admin/index/welcome";
     }
-
-
-
-
-
 }

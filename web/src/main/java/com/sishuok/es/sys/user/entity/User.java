@@ -51,12 +51,12 @@ public class User extends BaseEntity<Long> implements LogicDeleteable {
     @Pattern(regexp = USERNAME_PATTERN, message = "{user.username.not.valid}")
     private String username;
 
-    @NotEmpty(message = "{not.null}")
-    @Pattern(regexp = EMAIL_PATTERN, message = "{user.email.not.valid}")
+//    @NotEmpty(message = "{not.null}")
+//    @Pattern(regexp = EMAIL_PATTERN, message = "{user.email.not.valid}")
     private String email;
 
-    @NotEmpty(message = "{not.null}")
-    @Pattern(regexp = MOBILE_PHONE_NUMBER_PATTERN, message = "{user.mobile.phone.number.not.valid}")
+//    @NotEmpty(message = "{not.null}")
+//    @Pattern(regexp = MOBILE_PHONE_NUMBER_PATTERN, message = "{user.mobile.phone.number.not.valid}")
     @Column(name = "mobile_phone_number")
     private String mobilePhoneNumber;
 

@@ -1,5 +1,7 @@
 package com.sishuok.es.basedata.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -31,7 +33,8 @@ public class AttachmentImageInfo extends BaseDataInfo {
 	private String extName;//文件扩展名
 	private int width;//图片宽度
 	private int height;//图片高度
-
+	private BigDecimal rate;//图片宽度与高度比
+	
 	public String getStorePath() {
 		return storePath;
 	}
@@ -128,4 +131,11 @@ public class AttachmentImageInfo extends BaseDataInfo {
 		this.height = height;
 	}
 
+	public BigDecimal getRate() {
+		return rate;
+	}
+
+	public void setRate(BigDecimal rate) {
+		this.rate = rate;
+	}
 }

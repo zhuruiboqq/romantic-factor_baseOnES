@@ -8,6 +8,8 @@ package com.sishuok.es.basedata.web.controller;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.MathContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -78,7 +80,8 @@ public class AttachmentImageController<M extends AttachmentImageInfo> extends Ba
 		System.out.println(request.getParameter("artist") + " " + request.getParameter("artist.id"));
 		System.out.println(request.getParameter("uploadType"));
 		//The file upload plugin makes use of an Iframe Transport module for browsers like Microsoft Internet Explorer and Opera, which do not yet support XMLHTTPRequest file uploads.
-		response.setContentType("text/plain");
+		//		response.setContentType("text/plain");
+		//		response.setContentType("text/html; charset=UTF-8");//使用了@ResponseBody，本语句不起作用，在配置文件《spring-mvc.xml》中找到bean fastJsonHttpMessageConverter修改
 
 		AjaxUploadResponseEx ajaxUploadResponse = new AjaxUploadResponseEx();
 
@@ -150,6 +153,7 @@ public class AttachmentImageController<M extends AttachmentImageInfo> extends Ba
 			int srcHeight = src.getHeight(null);
 			m.setWidth(srcWidth);
 			m.setHeight(srcHeight);
+			m.setRate(new BigDecimal((double)m.getWidth() * 100 / m.getHeight(),new MathContext(4)));
 			//			if (srcWidth >= srcHeight) {
 			//				ImgCompressUtil.scale2(m.getStorePath(), smallFilePath, AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.y,
 			//						AttachmentImageConstant.ImageSize.Artist_Works_Max_Width.x, false);
