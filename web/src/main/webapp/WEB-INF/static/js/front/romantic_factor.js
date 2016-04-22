@@ -135,18 +135,20 @@ $(function() {
 
 	/* dress_wedding dialog點擊小圖片事件 start */
 	var small_pic_index = 1;
-	$(".pre_pics").find("img").click(function() {
-		var big_pic_url = $(this).attr(bigPicAttrName);
-		$(".big_pic").find("img").fadeToggle("fast", function() {
-			$(".big_pic").find("img").attr("src", big_pic_url);
-			change_img_size();
+	function add_small_pic_click_event() {
+		$(".pre_pics").find("img").click(function() {
+			var big_pic_url = $(this).attr(bigPicAttrName);
+			$(".big_pic").find("img").fadeToggle("fast", function() {
+				$(".big_pic").find("img").attr("src", big_pic_url);
+				change_img_size();
+			});
+			$(".big_pic").find("img").slideToggle("2000");
+			$(".pre_pics").find("img").removeClass("big_pic_this");
+			$(this).addClass("big_pic_this");
+			small_pic_index = $(this).attr("index");
+			$(".now_small_pic_index").text(small_pic_index);
 		});
-		$(".big_pic").find("img").slideToggle("2000");
-		$(".pre_pics").find("img").removeClass("big_pic_this");
-		$(this).addClass("big_pic_this");
-		small_pic_index = $(this).attr("index");
-		$(".now_small_pic_index").text(small_pic_index);
-	});
+	}
 	/*
 	 * $(".next_btns").find(".btn_right").click(function(){ small_pic_index++;
 	 * if(small_pic_index==13){small_pic_index=1;}
@@ -208,12 +210,19 @@ $(function() {
 	var imgaddurl = function() {
 		// body...
 		var boxul = $('ul.fix'), bigimg = boxul.find('img'), len = bigimg.length, thumbimg = $('.pre_table').find('img');
+		var trRow = $('.pre_table').find('tr');
+		var tempStr = '';
 		for (var i = 0; i < len; i++) {
-			thumbimg.eq(i).attr('src', bigimg.eq(i).attr('src'));
-			thumbimg.eq(i).attr(bigPicAttrName, bigimg.eq(i).attr(bigPicAttrName));
+			tempStr = tempStr + '<td><a href="JavaScript:;"><img index="' + i + '" class="big_pic_this" src="' + bigimg.eq(i).attr('src') + '" '
+					+ bigPicAttrName + '="' + bigimg.eq(i).attr(bigPicAttrName) + '" /></a></td>';
+			// thumbimg.eq(i).attr('src', bigimg.eq(i).attr('src'));
+			// thumbimg.eq(i).attr(bigPicAttrName,
+			// bigimg.eq(i).attr(bigPicAttrName));
 		}
-		$('.big_pic').find('img').attr('src', bigimg.eq(0).attr(bigPicAttrName));
-	}();
+		$('.pre_table').find('tr').html(tempStr);
+		$('.big_pic').find('img').attr('src', bigimg.eq(0).attr(bigPicAttrName));// 默认显示第一张大图
+		add_small_pic_click_event();
+	}();// 定义完后，直接执行一次
 
 	/* 首頁第二屏圖片輪播按鈕點擊事件 start */
 	var now_content_list2_lubo_index = 0;

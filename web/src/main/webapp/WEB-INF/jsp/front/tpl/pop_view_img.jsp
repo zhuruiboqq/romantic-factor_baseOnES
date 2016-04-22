@@ -14,7 +14,7 @@
 			<table class="pre_table">
 				<tr>
 					<td><a href="JavaScript:;"><img index="1" class="big_pic_this" src="${ctx}/static/images/front/dress_wedding_pic1.jpg" /></a></td>
-					<td><a href="JavaScript:;"><img index="2" src="${ctx}/static/images/front/dress_wedding_pic2.jpg" /></a></td>
+					<%-- <td><a href="JavaScript:;"><img index="2" src="${ctx}/static/images/front/dress_wedding_pic2.jpg" /></a></td>
 					<td><a href="JavaScript:;"><img index="3" src="${ctx}/static/images/front/dress_wedding_pic3.jpg" /></a></td>
 					<td><a href="JavaScript:;"><img index="4" src="${ctx}/static/images/front/head_pic1.jpg" /></a></td>
 					<td><a href="JavaScript:;"><img index="5" src="${ctx}/static/images/front/head_pic2.jpg" /></a></td>
@@ -24,7 +24,7 @@
 					<td><a href="JavaScript:;"><img index="9" src="${ctx}/static/images/front/head_pic_sec2.jpg" /></a></td>
 					<td><a href="JavaScript:;"><img index="10" src="${ctx}/static/images/front/head_pic_sec3.jpg" /></a></td>
 					<td><a href="JavaScript:;"><img index="11" src="${ctx}/static/images/front/leave_words1.jpg" /></a></td>
-					<td><a href="JavaScript:;"><img index="12" src="${ctx}/static/images/front/brand_content_pic_3.jpg" /></a></td>
+					<td><a href="JavaScript:;"><img index="12" src="${ctx}/static/images/front/brand_content_pic_3.jpg" /></a></td> --%>
 				</tr>
 			</table>
 		</div>
